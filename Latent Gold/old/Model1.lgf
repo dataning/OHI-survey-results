@@ -1,0 +1,32 @@
+ data ='C:\Users\Remi-Work\Documents\R\OHI survey results\Latent Gold\choice.csv' delim = comma quote = single;
+
+model  choice 1 /
+  maxthreads=8  toler=1e-008  tolem=0.01  tolran=1e-005  bayes=1  bayess2=1  bayeslat=1
+  bayespoi=1
+  iterem=250  iternr=50  itersv=50
+  iterboot=500
+  nseed=100725  nseedboot=100725
+  nrand=0
+  usemiss=No
+  sewald=yes  dummy=no
+ outsect=0x1c97
+ betaopts="szwm"
+;
+repscl sweight;
+chdes = 'C:\Users\Remi-Work\Documents\R\OHI survey results\Latent Gold\alternative.csv' delim = comma quote = single
+;
+  attrid alternative;
+chset = 'C:\Users\Remi-Work\Documents\R\OHI survey results\Latent Gold\choiceset2.csv' delim = comma quote = single
+;
+  csetid cs;
+dependent pbw_choicenumeric;
+replicate id;
+chidv pbw_cs;
+chvar Foodprovision NonFoodProducts CarbonStorage CoastalProtection
+ CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+ Biodiversity;
+chnum Foodprovision NonFoodProducts CarbonStorage CoastalProtection CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+     Biodiversity;
+attr pbw_choicenumeric ordinal  ;
+
+end;

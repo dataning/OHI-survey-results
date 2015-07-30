@@ -1,0 +1,688 @@
+ data ='C:\Users\Remi-Work\Documents\R\OHI survey results\Latent Gold\choice_cov.csv' delim = comma quote = single;
+
+model:Model2  choice 2 /
+  maxthreads=8  toler=1e-008  tolem=0.01  tolran=1e-005  bayes=1  bayess2=1  bayeslat=1
+  bayespoi=1
+  iterem=250  iternr=50  itersv=50
+  iterboot=500
+  nseed=340019  nseedboot=340019
+  nrand=0
+  usemiss=No
+  sewald=yes  dummy=no
+ outsect=0x1c97
+ betaopts="wm"
+;
+repscl '"sweight"';
+chdes = 'C:\Users\Remi-Work\Documents\R\OHI survey results\Latent Gold\alternative.csv' delim = comma quote = single
+;
+  attrid alternative;
+chset = 'C:\Users\Remi-Work\Documents\R\OHI survey results\Latent Gold\choiceset2.csv' delim = comma quote = single
+;
+  csetid cs;
+dependent '"pbw_choicenumeric"';
+replicate '"id.x"';
+chidv '"pbw_cs"';
+chvar Foodprovision NonFoodProducts CarbonStorage CoastalProtection
+ CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+ Biodiversity;
+chnum Foodprovision NonFoodProducts CarbonStorage CoastalProtection CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+     Biodiversity;
+covariate '"sample"' '"ocean_days"' '"seafood_eat"' '"demoone_gender"'
+ '"demoone_education"' '"demotwo_livedCanada"' '"envr_org"' '"envr_protest"'
+ '"political_party"' '"demothree_income"' '"demothree_householdsize"'
+ '"demothree_age"' '"distance_FSAc"' '"rec"' '"jobs"';
+attr '"pbw_choicenumeric"' ordinal  ;
+attr '"sample"' nominal  ;
+attr '"ocean_days"' nominal  ;
+attr '"seafood_eat"' nominal  ;
+attr '"demoone_gender"' nominal  ;
+attr '"demoone_education"' nominal  ;
+attr '"demotwo_livedCanada"' nominal  ;
+attr '"envr_org"' nominal  ;
+attr '"envr_protest"' nominal  ;
+attr '"political_party"' nominal  ;
+attr '"demothree_income"' ordinal  ;
+attr '"demothree_householdsize"' nominal  ;
+attr '"demothree_age"' nominal  ;
+attr '"distance_FSAc"' nominal  ;
+attr '"rec"' ordinal  ;
+attr '"jobs"' nominal  ;
+
+end;
+model  choice 6 /
+  maxthreads=8  toler=1e-008  tolem=0.01  tolran=1e-005  bayes=1  bayess2=1  bayeslat=1
+  bayespoi=1
+  iterem=250  iternr=50  itersv=50
+  iterboot=500
+  nseed=382201  nseedboot=523018
+  nrand=0
+  usemiss=No
+  sewald=yes  dummy=no
+ outsect=0x1c97
+ betaopts="wm"
+;
+repscl '"sweight"';
+dependent '"pbw_choicenumeric"';
+replicate '"id.x"';
+chidv '"pbw_cs"';
+chvar Foodprovision NonFoodProducts CarbonStorage CoastalProtection
+ CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+ Biodiversity;
+chnum Foodprovision NonFoodProducts CarbonStorage CoastalProtection CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+     Biodiversity;
+covariate '"sample"';
+attr '"pbw_choicenumeric"' ordinal  ;
+attr '"sample"' nominal  ;
+
+end;
+model  choice 6 /
+  maxthreads=8  toler=1e-008  tolem=0.01  tolran=1e-005  bayes=1  bayess2=1  bayeslat=1
+  bayespoi=1
+  iterem=250  iternr=50  itersv=50
+  iterboot=500
+  nseed=2459364  nseedboot=82930
+  nrand=0
+  usemiss=No
+  sewald=yes  dummy=no
+ outsect=0x1c97
+ betaopts="wm"
+;
+repscl '"sweight"';
+dependent '"pbw_choicenumeric"';
+replicate '"id.x"';
+chidv '"pbw_cs"';
+chvar Foodprovision NonFoodProducts CarbonStorage CoastalProtection
+ CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+ Biodiversity;
+chnum Foodprovision NonFoodProducts CarbonStorage CoastalProtection CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+     Biodiversity;
+covariate '"ocean_days"';
+attr '"pbw_choicenumeric"' ordinal  ;
+attr '"ocean_days"' nominal  ;
+
+end;
+model  choice 6 /
+  maxthreads=8  toler=1e-008  tolem=0.01  tolran=1e-005  bayes=1  bayess2=1  bayeslat=1
+  bayespoi=1
+  iterem=250  iternr=50  itersv=50
+  iterboot=500
+  nseed=2279624  nseedboot=148690
+  nrand=0
+  usemiss=No
+  sewald=yes  dummy=no
+ outsect=0x1c97
+ betaopts="wm"
+;
+repscl '"sweight"';
+dependent '"pbw_choicenumeric"';
+replicate '"id.x"';
+chidv '"pbw_cs"';
+chvar Foodprovision NonFoodProducts CarbonStorage CoastalProtection
+ CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+ Biodiversity;
+chnum Foodprovision NonFoodProducts CarbonStorage CoastalProtection CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+     Biodiversity;
+covariate '"seafood_eat"';
+attr '"pbw_choicenumeric"' ordinal  ;
+attr '"seafood_eat"' nominal  ;
+
+end;
+model  choice 6 /
+  maxthreads=8  toler=1e-008  tolem=0.01  tolran=1e-005  bayes=1  bayess2=1  bayeslat=1
+  bayespoi=1
+  iterem=250  iternr=50  itersv=50
+  iterboot=500
+  nseed=1333242  nseedboot=124629
+  nrand=0
+  usemiss=No
+  sewald=yes  dummy=no
+ outsect=0x1c97
+ betaopts="wm"
+;
+repscl '"sweight"';
+dependent '"pbw_choicenumeric"';
+replicate '"id.x"';
+chidv '"pbw_cs"';
+chvar Foodprovision NonFoodProducts CarbonStorage CoastalProtection
+ CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+ Biodiversity;
+chnum Foodprovision NonFoodProducts CarbonStorage CoastalProtection CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+     Biodiversity;
+covariate '"demoone_gender"';
+attr '"pbw_choicenumeric"' ordinal  ;
+attr '"demoone_gender"' nominal  ;
+
+end;
+model  choice 2 /
+  maxthreads=8  toler=1e-008  tolem=0.01  tolran=1e-005  bayes=1  bayess2=1  bayeslat=1
+  bayespoi=1
+  iterem=250  iternr=50  itersv=50
+  iterboot=500
+  nseed=912967  nseedboot=96639
+  nrand=0
+  usemiss=No
+  sewald=yes  dummy=no
+ outsect=0x1c97
+ betaopts="wm"
+;
+repscl '"sweight"';
+dependent '"pbw_choicenumeric"';
+replicate '"id.x"';
+chidv '"pbw_cs"';
+chvar Foodprovision NonFoodProducts CarbonStorage CoastalProtection
+ CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+ Biodiversity;
+chnum Foodprovision NonFoodProducts CarbonStorage CoastalProtection CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+     Biodiversity;
+covariate '"demoone_gender"';
+attr '"pbw_choicenumeric"' ordinal  ;
+attr '"demoone_gender"' nominal  ;
+
+end;
+model  choice 5 /
+  maxthreads=8  toler=1e-008  tolem=0.01  tolran=1e-005  bayes=1  bayess2=1  bayeslat=1
+  bayespoi=1
+  iterem=250  iternr=50  itersv=50
+  iterboot=500
+  nseed=2019342  nseedboot=487264
+  nrand=0
+  usemiss=No
+  sewald=yes  dummy=no
+ outsect=0x1c97
+ betaopts="wm"
+;
+repscl '"sweight"';
+dependent '"pbw_choicenumeric"';
+replicate '"id.x"';
+chidv '"pbw_cs"';
+chvar Foodprovision NonFoodProducts CarbonStorage CoastalProtection
+ CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+ Biodiversity;
+chnum Foodprovision NonFoodProducts CarbonStorage CoastalProtection CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+     Biodiversity;
+covariate '"demoone_education"';
+attr '"pbw_choicenumeric"' ordinal  ;
+attr '"demoone_education"' nominal  ;
+
+end;
+model  choice 5 /
+  maxthreads=8  toler=1e-008  tolem=0.01  tolran=1e-005  bayes=1  bayess2=1  bayeslat=1
+  bayespoi=1
+  iterem=250  iternr=50  itersv=50
+  iterboot=500
+  nseed=167631  nseedboot=134409
+  nrand=0
+  usemiss=No
+  sewald=yes  dummy=no
+ outsect=0x1c97
+ betaopts="wm"
+;
+repscl '"sweight"';
+dependent '"pbw_choicenumeric"';
+replicate '"id.x"';
+chidv '"pbw_cs"';
+chvar Foodprovision NonFoodProducts CarbonStorage CoastalProtection
+ CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+ Biodiversity;
+chnum Foodprovision NonFoodProducts CarbonStorage CoastalProtection CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+     Biodiversity;
+covariate '"demotwo_livedCanada"';
+attr '"pbw_choicenumeric"' ordinal  ;
+attr '"demotwo_livedCanada"' nominal  ;
+
+end;
+model  choice 5 /
+  maxthreads=8  toler=1e-008  tolem=0.01  tolran=1e-005  bayes=1  bayess2=1  bayeslat=1
+  bayespoi=1
+  iterem=250  iternr=50  itersv=50
+  iterboot=500
+  nseed=955145  nseedboot=90794
+  nrand=0
+  usemiss=No
+  sewald=yes  dummy=no
+ outsect=0x1c97
+ betaopts="wm"
+;
+repscl '"sweight"';
+dependent '"pbw_choicenumeric"';
+replicate '"id.x"';
+chidv '"pbw_cs"';
+chvar Foodprovision NonFoodProducts CarbonStorage CoastalProtection
+ CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+ Biodiversity;
+chnum Foodprovision NonFoodProducts CarbonStorage CoastalProtection CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+     Biodiversity;
+covariate '"envr_org"';
+attr '"pbw_choicenumeric"' ordinal  ;
+attr '"envr_org"' nominal  ;
+
+end;
+model  choice 2 /
+  maxthreads=8  toler=1e-008  tolem=0.01  tolran=1e-005  bayes=1  bayess2=1  bayeslat=1
+  bayespoi=1
+  iterem=250  iternr=50  itersv=50
+  iterboot=500
+  nseed=218971  nseedboot=543919
+  nrand=0
+  usemiss=No
+  sewald=yes  dummy=no
+ outsect=0x1c97
+ betaopts="wm"
+;
+repscl '"sweight"';
+dependent '"pbw_choicenumeric"';
+replicate '"id.x"';
+chidv '"pbw_cs"';
+chvar Foodprovision NonFoodProducts CarbonStorage CoastalProtection
+ CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+ Biodiversity;
+chnum Foodprovision NonFoodProducts CarbonStorage CoastalProtection CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+     Biodiversity;
+covariate '"envr_org"';
+attr '"pbw_choicenumeric"' ordinal  ;
+attr '"envr_org"' nominal  ;
+
+end;
+model  choice 2 /
+  maxthreads=8  toler=1e-008  tolem=0.01  tolran=1e-005  bayes=1  bayess2=1  bayeslat=1
+  bayespoi=1
+  iterem=250  iternr=50  itersv=50
+  iterboot=500
+  nseed=1207775  nseedboot=437801
+  nrand=0
+  usemiss=No
+  sewald=yes  dummy=no
+ outsect=0x1c97
+ betaopts="wm"
+;
+repscl '"sweight"';
+dependent '"pbw_choicenumeric"';
+replicate '"id.x"';
+chidv '"pbw_cs"';
+chvar Foodprovision NonFoodProducts CarbonStorage CoastalProtection
+ CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+ Biodiversity;
+chnum Foodprovision NonFoodProducts CarbonStorage CoastalProtection CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+     Biodiversity;
+covariate '"envr_protest"';
+attr '"pbw_choicenumeric"' ordinal  ;
+attr '"envr_protest"' nominal  ;
+
+end;
+model  choice 2 /
+  maxthreads=8  toler=1e-008  tolem=0.01  tolran=1e-005  bayes=1  bayess2=1  bayeslat=1
+  bayespoi=1
+  iterem=250  iternr=50  itersv=50
+  iterboot=500
+  nseed=385140  nseedboot=147446
+  nrand=0
+  usemiss=No
+  sewald=yes  dummy=no
+ outsect=0x1c97
+ betaopts="wm"
+;
+repscl '"sweight"';
+dependent '"pbw_choicenumeric"';
+replicate '"id.x"';
+chidv '"pbw_cs"';
+chvar Foodprovision NonFoodProducts CarbonStorage CoastalProtection
+ CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+ Biodiversity;
+chnum Foodprovision NonFoodProducts CarbonStorage CoastalProtection CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+     Biodiversity;
+covariate '"political_party"';
+attr '"pbw_choicenumeric"' ordinal  ;
+attr '"political_party"' nominal  ;
+
+end;
+model  choice 2 /
+  maxthreads=8  toler=1e-008  tolem=0.01  tolran=1e-005  bayes=1  bayess2=1  bayeslat=1
+  bayespoi=1
+  iterem=250  iternr=50  itersv=50
+  iterboot=500
+  nseed=2688188  nseedboot=541331
+  nrand=0
+  usemiss=No
+  sewald=yes  dummy=no
+ outsect=0x1c97
+ betaopts="wm"
+;
+repscl '"sweight"';
+dependent '"pbw_choicenumeric"';
+replicate '"id.x"';
+chidv '"pbw_cs"';
+chvar Foodprovision NonFoodProducts CarbonStorage CoastalProtection
+ CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+ Biodiversity;
+chnum Foodprovision NonFoodProducts CarbonStorage CoastalProtection CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+     Biodiversity;
+covariate '"demothree_income"';
+attr '"pbw_choicenumeric"' ordinal  ;
+attr '"demothree_income"' ordinal  ;
+
+end;
+model  choice 5 /
+  maxthreads=8  toler=1e-008  tolem=0.01  tolran=1e-005  bayes=1  bayess2=1  bayeslat=1
+  bayespoi=1
+  iterem=250  iternr=50  itersv=50
+  iterboot=500
+  nseed=1486662  nseedboot=4233
+  nrand=0
+  usemiss=No
+  sewald=yes  dummy=no
+ outsect=0x1c97
+ betaopts="wm"
+;
+repscl '"sweight"';
+dependent '"pbw_choicenumeric"';
+replicate '"id.x"';
+chidv '"pbw_cs"';
+chvar Foodprovision NonFoodProducts CarbonStorage CoastalProtection
+ CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+ Biodiversity;
+chnum Foodprovision NonFoodProducts CarbonStorage CoastalProtection CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+     Biodiversity;
+covariate '"demothree_income"';
+attr '"pbw_choicenumeric"' ordinal  ;
+attr '"demothree_income"' ordinal  ;
+
+end;
+model  choice 5 /
+  maxthreads=8  toler=1e-008  tolem=0.01  tolran=1e-005  bayes=1  bayess2=1  bayeslat=1
+  bayespoi=1
+  iterem=250  iternr=50  itersv=50
+  iterboot=500
+  nseed=2413955  nseedboot=332358
+  nrand=0
+  usemiss=No
+  sewald=yes  dummy=no
+ outsect=0x1c97
+ betaopts="wm"
+;
+repscl '"sweight"';
+dependent '"pbw_choicenumeric"';
+replicate '"id.x"';
+chidv '"pbw_cs"';
+chvar Foodprovision NonFoodProducts CarbonStorage CoastalProtection
+ CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+ Biodiversity;
+chnum Foodprovision NonFoodProducts CarbonStorage CoastalProtection CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+     Biodiversity;
+covariate '"demothree_income"' '"demothree_householdsize"';
+attr '"pbw_choicenumeric"' ordinal  ;
+attr '"demothree_income"' ordinal  ;
+attr '"demothree_householdsize"' nominal  ;
+
+end;
+model  choice 5 /
+  maxthreads=8  toler=1e-008  tolem=0.01  tolran=1e-005  bayes=1  bayess2=1  bayeslat=1
+  bayespoi=1
+  iterem=250  iternr=50  itersv=50
+  iterboot=500
+  nseed=2140171  nseedboot=538743
+  nrand=0
+  usemiss=No
+  sewald=yes  dummy=no
+ outsect=0x1c97
+ betaopts="wm"
+;
+repscl '"sweight"';
+dependent '"pbw_choicenumeric"';
+replicate '"id.x"';
+chidv '"pbw_cs"';
+chvar Foodprovision NonFoodProducts CarbonStorage CoastalProtection
+ CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+ Biodiversity;
+chnum Foodprovision NonFoodProducts CarbonStorage CoastalProtection CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+     Biodiversity;
+covariate '"demothree_householdsize"';
+attr '"pbw_choicenumeric"' ordinal  ;
+attr '"demothree_householdsize"' nominal  ;
+
+end;
+model  choice 5 /
+  maxthreads=8  toler=1e-008  tolem=0.01  tolran=1e-005  bayes=1  bayess2=1  bayeslat=1
+  bayespoi=1
+  iterem=250  iternr=50  itersv=50
+  iterboot=500
+  nseed=2514650  nseedboot=123388
+  nrand=0
+  usemiss=No
+  sewald=yes  dummy=no
+ outsect=0x1c97
+ betaopts="wm"
+;
+repscl '"sweight"';
+dependent '"pbw_choicenumeric"';
+replicate '"id.x"';
+chidv '"pbw_cs"';
+chvar Foodprovision NonFoodProducts CarbonStorage CoastalProtection
+ CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+ Biodiversity;
+chnum Foodprovision NonFoodProducts CarbonStorage CoastalProtection CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+     Biodiversity;
+covariate '"demothree_age"';
+attr '"pbw_choicenumeric"' ordinal  ;
+attr '"demothree_age"' nominal  ;
+
+end;
+model  choice 5 /
+  maxthreads=8  toler=1e-008  tolem=0.01  tolran=1e-005  bayes=1  bayess2=1  bayeslat=1
+  bayespoi=1
+  iterem=250  iternr=50  itersv=50
+  iterboot=500
+  nseed=2258059  nseedboot=392270
+  nrand=0
+  usemiss=No
+  sewald=yes  dummy=no
+ outsect=0x1c97
+ betaopts="wm"
+;
+repscl '"sweight"';
+dependent '"pbw_choicenumeric"';
+replicate '"id.x"';
+chidv '"pbw_cs"';
+chvar Foodprovision NonFoodProducts CarbonStorage CoastalProtection
+ CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+ Biodiversity;
+chnum Foodprovision NonFoodProducts CarbonStorage CoastalProtection CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+     Biodiversity;
+covariate '"distance_FSAc"';
+attr '"pbw_choicenumeric"' ordinal  ;
+attr '"distance_FSAc"' nominal  ;
+
+end;
+model  choice 2 /
+  maxthreads=8  toler=1e-008  tolem=0.01  tolran=1e-005  bayes=1  bayess2=1  bayeslat=1
+  bayespoi=1
+  iterem=250  iternr=50  itersv=50
+  iterboot=500
+  nseed=208646  nseedboot=239280
+  nrand=0
+  usemiss=No
+  sewald=yes  dummy=no
+ outsect=0x1c97
+ betaopts="wm"
+;
+repscl '"sweight"';
+dependent '"pbw_choicenumeric"';
+replicate '"id.x"';
+chidv '"pbw_cs"';
+chvar Foodprovision NonFoodProducts CarbonStorage CoastalProtection
+ CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+ Biodiversity;
+chnum Foodprovision NonFoodProducts CarbonStorage CoastalProtection CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+     Biodiversity;
+covariate '"distance_FSAc"';
+attr '"pbw_choicenumeric"' ordinal  ;
+attr '"distance_FSAc"' nominal  ;
+
+end;
+model  choice 2 /
+  maxthreads=8  toler=1e-008  tolem=0.01  tolran=1e-005  bayes=1  bayess2=1  bayeslat=1
+  bayespoi=1
+  iterem=250  iternr=50  itersv=50
+  iterboot=500
+  nseed=414415  nseedboot=414415
+  nrand=0
+  usemiss=No
+  sewald=yes  dummy=no
+ outsect=0x1c97
+ betaopts="wm"
+;
+repscl '"sweight"';
+dependent '"pbw_choicenumeric"';
+replicate '"id.x"';
+chidv '"pbw_cs"';
+chvar Foodprovision NonFoodProducts CarbonStorage CoastalProtection
+ CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+ Biodiversity;
+chnum Foodprovision NonFoodProducts CarbonStorage CoastalProtection CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+     Biodiversity;
+covariate '"rec"';
+attr '"pbw_choicenumeric"' ordinal  ;
+attr '"rec"' ordinal  ;
+
+end;
+model  choice 2 /
+  maxthreads=8  toler=1e-008  tolem=0.01  tolran=1e-005  bayes=1  bayess2=1  bayeslat=1
+  bayespoi=1
+  iterem=250  iternr=50  itersv=50
+  iterboot=500
+  nseed=527050  nseedboot=527050
+  nrand=0
+  usemiss=No
+  sewald=yes  dummy=no
+ outsect=0x1c97
+ betaopts="wm"
+;
+repscl '"sweight"';
+dependent '"pbw_choicenumeric"';
+replicate '"id.x"';
+chidv '"pbw_cs"';
+chvar Foodprovision NonFoodProducts CarbonStorage CoastalProtection
+ CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+ Biodiversity;
+chnum Foodprovision NonFoodProducts CarbonStorage CoastalProtection CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+     Biodiversity;
+covariate '"jobs"';
+attr '"pbw_choicenumeric"' ordinal  ;
+attr '"jobs"' nominal  ;
+
+end;
+model  choice 4 /
+  maxthreads=8  toler=1e-008  tolem=0.01  tolran=1e-005  bayes=1  bayess2=1  bayeslat=1
+  bayespoi=1
+  iterem=250  iternr=50  itersv=50
+  iterboot=500
+  nseed=217810  nseedboot=217810
+  nrand=0
+  usemiss=No
+  sewald=yes  dummy=no
+ outsect=0x1c97
+ betaopts="wm"
+;
+repscl '"sweight"';
+dependent '"pbw_choicenumeric"';
+replicate '"id.x"';
+chidv '"pbw_cs"';
+chvar Foodprovision NonFoodProducts CarbonStorage CoastalProtection
+ CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+ Biodiversity;
+chnum Foodprovision NonFoodProducts CarbonStorage CoastalProtection CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+     Biodiversity;
+covariate '"jobs"';
+attr '"pbw_choicenumeric"' ordinal  ;
+attr '"jobs"' nominal  ;
+
+end;
+model  choice 4 /
+  maxthreads=8  toler=1e-008  tolem=0.01  tolran=1e-005  bayes=1  bayess2=1  bayeslat=1
+  bayespoi=1
+  iterem=250  iternr=50  itersv=50
+  iterboot=500
+  nseed=499060  nseedboot=499060
+  nrand=0
+  usemiss=No
+  sewald=yes  dummy=no
+ outsect=0x1c97
+ betaopts="wm"
+;
+repscl '"sweight"';
+dependent '"pbw_choicenumeric"';
+replicate '"id.x"';
+chidv '"pbw_cs"';
+chvar Foodprovision NonFoodProducts CarbonStorage CoastalProtection
+ CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+ Biodiversity;
+chnum Foodprovision NonFoodProducts CarbonStorage CoastalProtection CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+     Biodiversity;
+covariate '"rec"';
+attr '"pbw_choicenumeric"' ordinal  ;
+attr '"rec"' ordinal  ;
+
+end;
+model  choice 4 /
+  maxthreads=8  toler=1e-008  tolem=0.01  tolran=1e-005  bayes=1  bayess2=1  bayeslat=1
+  bayespoi=1
+  iterem=250  iternr=50  itersv=50
+  iterboot=500
+  nseed=1998065  nseedboot=109107
+  nrand=0
+  usemiss=No
+  sewald=yes  dummy=no
+ outsect=0x1c97
+ betaopts="wm"
+;
+repscl '"sweight"';
+dependent '"pbw_choicenumeric"';
+replicate '"id.x"';
+chidv '"pbw_cs"';
+chvar Foodprovision NonFoodProducts CarbonStorage CoastalProtection
+ CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+ Biodiversity;
+chnum Foodprovision NonFoodProducts CarbonStorage CoastalProtection CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+     Biodiversity;
+covariate '"rec"' '"seafood_eat"' '"envr_org"' '"political_party"'
+ '"sample"' '"demothree_age"';
+attr '"pbw_choicenumeric"' ordinal  ;
+attr '"sample"' nominal  ;
+attr '"seafood_eat"' nominal  ;
+attr '"envr_org"' nominal  ;
+attr '"political_party"' nominal  ;
+attr '"demothree_age"' nominal  ;
+attr '"rec"' ordinal  ;
+
+end;
+model  choice 4 /
+  maxthreads=8  toler=1e-008  tolem=0.01  tolran=1e-005  bayes=1  bayess2=1  bayeslat=1
+  bayespoi=1
+  iterem=250  iternr=50  itersv=50
+  iterboot=500
+  nseed=0  nseedboot=0
+  nrand=16
+  usemiss=No
+  sewald=yes  dummy=no
+ outsect=0x1c97
+ betaopts="wm"
+;
+repscl '"sweight"';
+dependent '"pbw_choicenumeric"';
+replicate '"id.x"';
+chidv '"pbw_cs"';
+chvar Foodprovision NonFoodProducts CarbonStorage CoastalProtection
+ CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+ Biodiversity;
+chnum Foodprovision NonFoodProducts CarbonStorage CoastalProtection CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+     Biodiversity;
+covariate '"rec"' '"seafood_eat"' '"envr_org"' '"political_party"'
+ '"sample"' '"demothree_age"';
+attr '"pbw_choicenumeric"' ordinal  ;
+attr '"sample"' nominal  ;
+attr '"seafood_eat"' nominal  ;
+attr '"envr_org"' nominal  ;
+attr '"political_party"' nominal  ;
+attr '"demothree_age"' nominal  ;
+attr '"rec"' ordinal  ;
+
+end;

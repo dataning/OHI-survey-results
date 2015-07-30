@@ -1,0 +1,264 @@
+ data ='C:\Users\Remi-Work\Documents\R\OHI survey results\Latent Gold\choice_cov.csv' delim = comma quote = single;
+
+model  choice 2 /
+  maxthreads=8  toler=1e-008  tolem=0.01  tolran=1e-005  bayes=1  bayess2=1  bayeslat=1
+  bayespoi=1
+  iterem=250  iternr=50  itersv=50
+  iterboot=500
+  nseed=192482  nseedboot=195726
+  nrand=0
+  usemiss=No
+  sewald=yes  dummy=no
+ outsect=0x1c97
+ betaopts="szwm"
+;
+repscl '"sweight"';
+chdes = 'C:\Users\Remi-Work\Documents\R\OHI survey results\Latent Gold\alternative.csv' delim = comma quote = single
+;
+  attrid alternative;
+chset = 'C:\Users\Remi-Work\Documents\R\OHI survey results\Latent Gold\choiceset2.csv' delim = comma quote = single
+;
+  csetid cs;
+dependent '"pbw_choicenumeric"';
+replicate '"id.x"';
+chidv '"pbw_cs"';
+chvar Foodprovision NonFoodProducts CarbonStorage CoastalProtection
+ CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+ Biodiversity;
+chnum Foodprovision NonFoodProducts CarbonStorage CoastalProtection CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+     Biodiversity;
+covariate '"sample"' '"seafood_eat"' '"envr_org"' '"rec"' '"demothree_age_num"'
+ '"political_party2"';
+attr '"pbw_choicenumeric"' ordinal  ;
+attr '"sample"' nominal  ;
+attr '"seafood_eat"' ordinal  ;
+attr '"envr_org"' nominal  ;
+attr '"rec"' ordinal  ;
+attr '"demothree_age_num"' ordinal  ;
+attr '"political_party2"' nominal  ;
+
+end;
+model  choice 3 /
+  maxthreads=8  toler=1e-008  tolem=0.01  tolran=1e-005  bayes=1  bayess2=1  bayeslat=1
+  bayespoi=1
+  iterem=250  iternr=50  itersv=50
+  iterboot=500
+  nseed=339611  nseedboot=339611
+  nrand=0
+  usemiss=No
+  sewald=yes  dummy=no
+ outsect=0x1c97
+ betaopts="szwm"
+;
+repscl '"sweight"';
+dependent '"pbw_choicenumeric"';
+replicate '"id.x"';
+chidv '"pbw_cs"';
+chvar Foodprovision NonFoodProducts CarbonStorage CoastalProtection
+ CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+ Biodiversity;
+chnum Foodprovision NonFoodProducts CarbonStorage CoastalProtection CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+     Biodiversity;
+covariate '"sample"' '"seafood_eat"' '"envr_org"' '"rec"' '"demothree_age_num"'
+ '"political_party2"';
+attr '"pbw_choicenumeric"' ordinal  ;
+attr '"sample"' nominal  ;
+attr '"seafood_eat"' ordinal  ;
+attr '"envr_org"' nominal  ;
+attr '"rec"' ordinal  ;
+attr '"demothree_age_num"' ordinal  ;
+attr '"political_party2"' nominal  ;
+
+end;
+model  choice 4 /
+  maxthreads=8  toler=1e-008  tolem=0.01  tolran=1e-005  bayes=1  bayess2=1  bayeslat=1
+  bayespoi=1
+  iterem=250  iternr=50  itersv=50
+  iterboot=500
+  nseed=2580503  nseedboot=102648
+  nrand=0
+  usemiss=No
+  sewald=yes  dummy=no
+ outsect=0x1c97
+ betaopts="szwm"
+;
+repscl '"sweight"';
+dependent '"pbw_choicenumeric"';
+replicate '"id.x"';
+chidv '"pbw_cs"';
+chvar Foodprovision NonFoodProducts CarbonStorage CoastalProtection
+ CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+ Biodiversity;
+chnum Foodprovision NonFoodProducts CarbonStorage CoastalProtection CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+     Biodiversity;
+covariate '"sample"' '"seafood_eat"' '"envr_org"' '"rec"' '"demothree_age_num"'
+ '"political_party2"';
+attr '"pbw_choicenumeric"' ordinal  ;
+attr '"sample"' nominal  ;
+attr '"seafood_eat"' ordinal  ;
+attr '"envr_org"' nominal  ;
+attr '"rec"' ordinal  ;
+attr '"demothree_age_num"' ordinal  ;
+attr '"political_party2"' nominal  ;
+
+end;
+model  choice 5 /
+  maxthreads=8  toler=1e-008  tolem=0.01  tolran=1e-005  bayes=1  bayess2=1  bayeslat=1
+  bayespoi=1
+  iterem=250  iternr=50  itersv=50
+  iterboot=500
+  nseed=1955228  nseedboot=477648
+  nrand=0
+  usemiss=No
+  sewald=yes  dummy=no
+ outsect=0x1c97
+ betaopts="wm"
+;
+repscl '"sweight"';
+dependent '"pbw_choicenumeric"';
+replicate '"id.x"';
+chidv '"pbw_cs"';
+chvar Foodprovision NonFoodProducts CarbonStorage CoastalProtection
+ CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+ Biodiversity;
+chnum Foodprovision NonFoodProducts CarbonStorage CoastalProtection CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+     Biodiversity;
+covariate '"sample"' '"seafood_eat"' '"envr_org"' '"rec"' '"demothree_age_num"'
+ '"political_party2"';
+attr '"pbw_choicenumeric"' ordinal  ;
+attr '"sample"' nominal  ;
+attr '"seafood_eat"' ordinal  ;
+attr '"envr_org"' nominal  ;
+attr '"rec"' ordinal  ;
+attr '"demothree_age_num"' ordinal  ;
+attr '"political_party2"' nominal  ;
+
+end;
+model  choice 6 /
+  maxthreads=8  toler=1e-008  tolem=0.01  tolran=1e-005  bayes=1  bayess2=1  bayeslat=1
+  bayespoi=1
+  iterem=250  iternr=50  itersv=50
+  iterboot=500
+  nseed=527783  nseedboot=512158
+  nrand=0
+  usemiss=No
+  sewald=yes  dummy=no
+ outsect=0x1c97
+ betaopts="szwm"
+;
+repscl '"sweight"';
+dependent '"pbw_choicenumeric"';
+replicate '"id.x"';
+chidv '"pbw_cs"';
+chvar Foodprovision NonFoodProducts CarbonStorage CoastalProtection
+ CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+ Biodiversity;
+chnum Foodprovision NonFoodProducts CarbonStorage CoastalProtection CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+     Biodiversity;
+covariate '"sample"' '"seafood_eat"' '"envr_org"' '"rec"' '"demothree_age_num"'
+ '"political_party2"';
+attr '"pbw_choicenumeric"' ordinal  ;
+attr '"sample"' nominal  ;
+attr '"seafood_eat"' ordinal  ;
+attr '"envr_org"' nominal  ;
+attr '"rec"' ordinal  ;
+attr '"demothree_age_num"' ordinal  ;
+attr '"political_party2"' nominal  ;
+
+end;
+model  choice 7 /
+  maxthreads=8  toler=1e-008  tolem=0.01  tolran=1e-005  bayes=1  bayess2=1  bayeslat=1
+  bayespoi=1
+  iterem=250  iternr=50  itersv=50
+  iterboot=500
+  nseed=2702254  nseedboot=499790
+  nrand=0
+  usemiss=No
+  sewald=yes  dummy=no
+ outsect=0x1c97
+ betaopts="szwm"
+;
+repscl '"sweight"';
+dependent '"pbw_choicenumeric"';
+replicate '"id.x"';
+chidv '"pbw_cs"';
+chvar Foodprovision NonFoodProducts CarbonStorage CoastalProtection
+ CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+ Biodiversity;
+chnum Foodprovision NonFoodProducts CarbonStorage CoastalProtection CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+     Biodiversity;
+covariate '"sample"' '"seafood_eat"' '"envr_org"' '"rec"' '"demothree_age_num"'
+ '"political_party2"';
+attr '"pbw_choicenumeric"' ordinal  ;
+attr '"sample"' nominal  ;
+attr '"seafood_eat"' ordinal  ;
+attr '"envr_org"' nominal  ;
+attr '"rec"' ordinal  ;
+attr '"demothree_age_num"' ordinal  ;
+attr '"political_party2"' nominal  ;
+
+end;
+model  choice 8 /
+  maxthreads=8  toler=1e-008  tolem=0.01  tolran=1e-005  bayes=1  bayess2=1  bayeslat=1
+  bayespoi=1
+  iterem=250  iternr=50  itersv=50
+  iterboot=500
+  nseed=433806  nseedboot=131310
+  nrand=0
+  usemiss=No
+  sewald=yes  dummy=no
+ outsect=0x1c97
+ betaopts="szwm"
+;
+repscl '"sweight"';
+dependent '"pbw_choicenumeric"';
+replicate '"id.x"';
+chidv '"pbw_cs"';
+chvar Foodprovision NonFoodProducts CarbonStorage CoastalProtection
+ CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+ Biodiversity;
+chnum Foodprovision NonFoodProducts CarbonStorage CoastalProtection CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+     Biodiversity;
+covariate '"sample"' '"seafood_eat"' '"envr_org"' '"rec"' '"demothree_age_num"'
+ '"political_party2"';
+attr '"pbw_choicenumeric"' ordinal  ;
+attr '"sample"' nominal  ;
+attr '"seafood_eat"' ordinal  ;
+attr '"envr_org"' nominal  ;
+attr '"rec"' ordinal  ;
+attr '"demothree_age_num"' ordinal  ;
+attr '"political_party2"' nominal  ;
+
+end;
+model  choice 8 /
+  maxthreads=8  toler=1e-008  tolem=0.01  tolran=1e-005  bayes=1  bayess2=1  bayeslat=1
+  bayespoi=1
+  iterem=250  iternr=50  itersv=50
+  iterboot=500
+  nseed=0  nseedboot=0
+  nrand=16
+  usemiss=No
+  sewald=yes  dummy=no
+ outsect=0x1c97
+ betaopts="wm"
+;
+repscl '"sweight"';
+dependent '"pbw_choicenumeric"';
+replicate '"id.x"';
+chidv '"pbw_cs"';
+chvar Foodprovision NonFoodProducts CarbonStorage CoastalProtection
+ CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+ Biodiversity;
+chnum Foodprovision NonFoodProducts CarbonStorage CoastalProtection CoastalLivelihoods TourismandRecreation IconicPlacesandSpecies CleanWaters
+     Biodiversity;
+covariate '"sample"' '"seafood_eat"' '"envr_org"' '"rec"' '"demothree_age_num"'
+ '"political_party2"';
+attr '"pbw_choicenumeric"' ordinal  ;
+attr '"sample"' nominal  ;
+attr '"seafood_eat"' ordinal  ;
+attr '"envr_org"' nominal  ;
+attr '"rec"' ordinal  ;
+attr '"demothree_age_num"' ordinal  ;
+attr '"political_party2"' nominal  ;
+
+end;

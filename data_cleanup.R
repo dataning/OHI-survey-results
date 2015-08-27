@@ -144,9 +144,13 @@ unique(raw$demothree_income)
 
 #envr org
 revalue(raw$envr_org,c("dontknow"=""))
+revalue(raw$envr_protest,c("dontknow"=""))
+revalue(raw$demoone_gender,c("noresponse"=""))
+
 
 #### deal with missing values ####
 raw$envr_org[raw$envr_org==""] <- "dontknow"
+raw$envr_protest[raw$envr_protest==""] <- "dontknow"
 raw$demoone_gender[raw$demoone_gender==""] <- "noresponse"
 
 stacked <- raw %>% gather(DCE_pg,answer,DCE_least1,DCE_least2,DCE_least3,DCE_least4,DCE_least5,DCE_least6,DCE_least7,DCE_least8,DCE_least9,DCE_least10,DCE_most1,DCE_most2,DCE_most3,DCE_most4,DCE_most5,DCE_most6,DCE_most7,DCE_most8,DCE_most9,DCE_most10)

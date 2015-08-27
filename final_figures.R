@@ -39,7 +39,7 @@ Likert <- raw %>%
   select(ends_with("general")) %>%
   gather(goal) %>% 
   group_by(goal) %>% 
-  summarize(mean_imp=mean(value,na.rm=TRUE),
+  summarise(mean_imp=mean(value,na.rm=TRUE),
             sd_imp=sd(value,na.rm=TRUE))
 
 
@@ -117,6 +117,8 @@ LG_data_2class %>% arrange(desc(Class2))
 
 
 #### Figure 2 ####
+library(multcomp)
+
 predictors <- c("sample","ocean_days","seafood_eat","demoone_gender","demotwo_livedCanada","envr_org","envr_protest","demothree_income2","demothree_householdsize","rural","distance_FSA","rec","jobs2","demoone_education2","demothree_age_num","political_party2")
 predictor_names <- c("province","ocean days","seafood eat","gender","lived in Canada","envr org","envr protest","income","householdsize","rural","distance","recreation","job type","education","age","political party")
 
@@ -137,7 +139,6 @@ for(i in seq_len(sum(!names(ind_lmc)%in%predictors))){
     text(cex=1, x=seq(1,19,by=1.2)+0.4, y=-0.7, predictor_names, xpd=TRUE, srt=50, pos=2)
     box(bty='l')
     title(GoalNames[i])
-    
   } else {
     mar <- c(1,5,1,1)
     effects_barplot(aovs[[i]][,4],aovs[[i]][,1],1942,aovs[[i]][,5],rep("",length(predictor_names)),mar,ylim=c(0,9))
@@ -148,69 +149,104 @@ for(i in seq_len(sum(!names(ind_lmc)%in%predictors))){
 dev.off()
 
 #### Figure 3 ####
-# pdf(paste('figures/f3_users.pdf'),height=10,width=full)
-jpeg(paste('figures/f3_users.jpg'),height=6,width=single,units = "in",res=res,qual=qual)
-
 aovs <- summary.aov(fit)
-layout(matrix(c(1:2),nrow=2))
-par(mar=c(5,4,1,0))
+ind_lmc$rec2 <- ceiling(ind_lmc$rec/4)*4
+
+# pdf(paste('figures/f3_users.pdf'),height=10,width=full)
+jpeg(paste('figures/f3_maineffects.jpg'),height=10,width=twothirds ,units = "in",res=res,qual=qual)
+
+layout(matrix(c(1:10),nrow=5))
+par(mar=c(5,4,1,1))
 boxplot(FoodProvision~seafood_eat,data=ind_lmc)
 title(ylab='Food Provision',xlab='Seafood eating frequency (yr^-1)')
+fit <- aov(as.formula(paste(names(ind_lmc)[1]," ~",paste(predictors,collapse=" + "))),data=data.frame(cbind(ind_lmc[1:10],apply(ind_lmc[11:30],2,factor))))
+cld(glht(fit,linfct=mcp(political_party2="Tukey")))
+fit <- aov(as.formula(paste(names(ind_lmc)[1]," ~",paste(predictors,collapse=" + "))),data=ind_lmc)
 
-ind_lmc$rec2 <- ceiling(ind_lmc$rec/4)*4
-boxplot(TourismRecreation~rec2,data=ind_lmc,names=c("0","1-4","5-8"))
-title(ylab='Tourism & Recreation',xlab='Number of Rec. Act.')
+TukeyHSD(fit,"political_party2")
 
-dev.off()
+boxplot(AboriginalNeeds~demothree_age_num,names=c("20-24","22-34","35-54","35-44","55-64","65+"),las=3,data=ind_lmc)
+title(ylab='Aboriginal Needs')
 
-
-#### Figure 4 ####
-# pdf(paste('figures/f4_sociodemo.pdf'),height=10,width=full)
-jpeg(paste('figures/f4_users.jpg'),height=10,width=full,units = "in",res=res,qual=qual)
-aovs <- summary.aov(fit)
-layout(matrix(c(1:12),nrow=4,byrow = T))
-
-#age
-par(mar=c(5,4,0,1))
-boxplot(CoastalLivelihoods~demothree_age_num,names=c("20-24","22-34","35-54","35-44","55-64","65+"),las=3,data=ind_lmc)
-title(ylab='CoastalLivelihoods')
+boxplot(NaturalProducts~political_party2,data=ind_lmc,names=c('CPC','LIB','N/G','Other'))
+title(ylab='Natural Products')
 
 boxplot(CarbonStorage~demothree_age_num,data=ind_lmc,names=c("20-24","22-34","35-54","35-44","55-64","65+"),las=3)
 title(ylab='CarbonStorage',xlab='Age')
+
+boxplot(CoastalProtection~jobs2,data=ind_lmc,names=c('Conser.','Extract.','None'))
+title(ylab='Coastal Protection',xlab='Type of job')
+
+boxplot(CoastalLivelihoods~demothree_age_num,names=c("20-24","22-34","35-54","35-44","55-64","65+"),las=3,data=ind_lmc)
+title(ylab='CoastalLivelihoods')
+
+boxplot(TourismRecreation~rec2,data=ind_lmc,names=c("0","1-4","5-8"))
+title(ylab='Tourism & Recreation',xlab='Number of Rec. Act.')
+
+boxplot(IconicPlacesSPecies~demothree_age_num,names=c("20-24","22-34","35-54","35-44","55-64","65+"),las=3,data=ind_lmc)
+title(ylab='IconicPlacesSPecies')
+
+boxplot(CleanWaters~jobs2,data=ind_lmc,names=c('Conser.','Extract.','None'))
+title(ylab='CleanWaters',xlab='Type of job')
 
 boxplot(Biodiversity~demothree_age_num,data=ind_lmc,names=c("20-24","22-34","35-54","35-44","55-64","65+"),las=3)
 title(ylab='Biodiversity')
 
 
-#political party
-boxplot(AboriginalNeeds~political_party2,data=ind_lmc,names=c('CPC','LIB','N/G','Other'))
-title(ylab='AboriginalNeeds')
-
-boxplot(TourismRecreation~political_party2,data=ind_lmc,names=c('CPC','LIB','N/G','Other'))
-title(ylab='Tourism & Recreation',xlab='Political Party')
-
-boxplot(Biodiversity~political_party2,data=ind_lmc,names=c('CPC','LIB','N/G','Other'))
-title(ylab='Biodiversity')
+dev.off()
 
 
-# env org
-boxplot(CoastalLivelihoods~as.character(envr_org),data=ind_lmc,names=c('Unknown','No','Yes'))
-title(ylab='CoastalLivelihoods')
+#### Figure Appendix ####
+ind_lmc$distance_FSA2 <- round(ind_lmc$distance_FSA/200000)*200000
+ind_lmc$rec2 <- ceiling(ind_lmc$rec/4)*4
+ind_lmc$demothree_income3 <- as.numeric(ind_lmc$demothree_income2)/1000
 
-boxplot(CarbonStorage~as.character(envr_org),ind_lmc,names=c('Unknown','No','Yes'))
-title(ylab='CarbonStorage',xlab='ENGO Membership')
+source('Appendix_figs.R')
 
-boxplot(Biodiversity~as.character(envr_org),data=ind_lmc,names=c('Unknown','No','Yes'))
-title(ylab='Biodiversity')
 
-# other
-boxplot(CleanWaters~jobs2,data=ind_lmc,names=c('Conser.','Extract.','None'))
-title(ylab='CleanWaters',xlab='Type of job')
 
-boxplot(CoastalLivelihoods~jobs2,data=ind_lmc,names=c('Conser.','Extract.','None'))
-title(ylab='CoastalLivelihoods',xlab='Type of job')
 
-boxplot(Biodiversity~demoone_education2,data=ind_lmc,names=c('Unknown','K-12','PS'))
-title(ylab='CleanWaters',xlab='Education')
+#### Figure 4 extractive vs non:extractive ####
+lmc_categorized <- as.data.frame(cbind(NE=apply(with(lmc2,cbind(CarbonStorage,CoastalProtection,TourismRecreation,IconicPlacesSPecies,CleanWaters,Biodiversity)),1,mean),
+                         E=apply(with(lmc2,cbind(FoodProvision,AboriginalNeeds,NaturalProducts,CoastalLivelihoods)),1,mean)))
+sum(lmc_categorized$E>lmc_categorized$NE)/nrow(lmc_categorized)
+
+ind_lmc$E_NE_ratio <- lmc_categorized$E/lmc_categorized$NE
+fit <- aov(as.formula(paste("log(ind_lmc$E_NE_ratio) ~",paste(predictors,collapse=" + "))),data=ind_lmc)
+summary(fit)
+
+# pdf(paste('figures/f3_users.pdf'),height=10,width=full)
+jpeg(paste('figures/f4_E_VS_NE.jpg'),height=8,width=twothirds ,units = "in",res=res,qual=qual)
+
+layout(matrix(c(1:8),nrow=4))
+
+effects_barplot(summary(fit)[[1]][,4],summary(fit)[[1]][,1],1658,summary(fit)[[1]][,5],rep("",length(predictor_names)),mar=c(5,4,1,1),ylim=c(0,9))
+text(cex=0.75, x=seq(1,19,by=1.2)+0.4, y=-0.7, predictor_names, xpd=TRUE, srt=50, pos=2)
+
+par(mar=c(5,4,1,1))
+
+boxplot(log(E_NE_ratio)~demothree_age_num,data=ind_lmc,names=c("20-24","22-34","35-54","35-44","55-64","65+"),las=3)
+title(ylab='E_NE_ratio',xlab='Age')
+
+boxplot(log(E_NE_ratio)~seafood_eat,data=ind_lmc)
+title(ylab='E_NE_ratio',xlab='Seafood eating frequency (yr^-1)')
+
+boxplot(log(E_NE_ratio)~rural,data=ind_lmc)
+title(ylab='E_NE_ratio')
+
+boxplot(log(E_NE_ratio)~rec2,data=ind_lmc,names=c("0","1-4","5-8"))
+title(ylab='E_NE_ratio',xlab='Number of Rec. Act.')
+
+boxplot(log(E_NE_ratio)~as.character(envr_org),data=ind_lmc,names=c('Unknown','No','Yes'))
+title(ylab='E_NE_ratio',xlab='ENGO Membership')
+
+boxplot(log(E_NE_ratio)~political_party2,data=ind_lmc,names=c('CPC','LIB','N/G','Other'))
+title(ylab='E_NE_ratio',xlab='Political Party')
+
+boxplot(log(E_NE_ratio)~as.character(envr_protest),data=ind_lmc,names=c('Unknown','No','Yes'))
+title(ylab='E_NE_ratio',xlab='Enviromental Protest')
 
 dev.off()
+
+library(dplyr)
+ind_lmc %>% group_by(political_party2,sample) %>% summarize(number=n())

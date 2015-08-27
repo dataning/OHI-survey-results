@@ -35,11 +35,13 @@ LG_data_1class$Class1 <- LG_data_1class$Class1/sum(LG_data_1class$Class1)*10
 #calculate the Likert scale importance
 library(dplyr)
 library(tidyr)
+detach(package:plyr)
+
 Likert <- raw %>% 
   select(ends_with("general")) %>%
   gather(goal) %>% 
   group_by(goal) %>% 
-  summarise(mean_imp=mean(value,na.rm=TRUE),
+  summarize(mean_imp=mean(value,na.rm=TRUE),
             sd_imp=sd(value,na.rm=TRUE))
 
 
@@ -119,12 +121,21 @@ LG_data_2class %>% arrange(desc(Class2))
 #### Figure 2 ####
 library(multcomp)
 
-predictors <- c("sample","ocean_days","seafood_eat","demoone_gender","demotwo_livedCanada","envr_org","envr_protest","demothree_income2","demothree_householdsize","rural","distance_FSA","rec","jobs2","demoone_education2","demothree_age_num","political_party2")
+predictors <- c("sample","ocean_days","seafood_eat","demoone_gender","demotwo_livedCanada","envr_org","envr_protest","demothree_income2","demothree_householdsize","rural","distance_FSA2","rec","jobs2","demoone_education2","demothree_age_num","political_party2")
 predictor_names <- c("province","ocean days","seafood eat","gender","lived in Canada","envr org","envr protest","income","householdsize","rural","distance","recreation","job type","education","age","political party")
 
 ind_lmc <- cbind(lmc2,raw[,names(raw)%in%predictors])
+ind_lmc$distance_FSA2 <- round(ind_lmc$distance_FSA/200000)*200000
+ind_lmc$rec2 <- ceiling(ind_lmc$rec/4)*4
+ind_lmc$demothree_income3 <- as.numeric(ind_lmc$demothree_income2)/1000
 
-fit <- manova(as.formula(paste("as.matrix(ind_lmc[,!names(ind_lmc)%in%predictors])~",paste(paste0("ind_lmc$",predictors), collapse= "+"))))
+for(i in 11:28){
+  if(is.character(ind_lmc[,i])){
+    ind_lmc[,i] <- factor(ind_lmc[,i])
+  }
+}
+
+fit <- manova(as.formula(paste("as.matrix(ind_lmc[,1:10])~",paste(paste0("ind_lmc$",predictors), collapse= "+"))))
 
 # pdf(paste('figures/f2_ANOVAS.pdf'),height=10,width=full)
 jpeg(paste('figures/f2_ANOVAS.jpg'),height=8,width=full,units = "in",res=res,qual=qual)
@@ -132,25 +143,31 @@ jpeg(paste('figures/f2_ANOVAS.jpg'),height=8,width=full,units = "in",res=res,qua
 aovs <- summary.aov(fit)
 layout(matrix(c(1:10),nrow=5),heights=c(2,2,2,2,3.25))
 
-for(i in seq_len(sum(!names(ind_lmc)%in%predictors))){
+for(i in 1:10){
   if(i==5|i==10){
     mar <- c(7,5,1,1)
-    effects_barplot(aovs[[i]][,4],aovs[[i]][,1],1942,aovs[[i]][,5],rep("",length(predictor_names)),mar,ylim=c(0,9))
+    effects_barplot(aovs[[i]][,4],aovs[[i]][,1],1631,aovs[[i]][,5],rep("",length(predictor_names)),mar,ylim=c(0,9))
     text(cex=1, x=seq(1,19,by=1.2)+0.4, y=-0.7, predictor_names, xpd=TRUE, srt=50, pos=2)
     box(bty='l')
     title(GoalNames[i])
   } else {
     mar <- c(1,5,1,1)
-    effects_barplot(aovs[[i]][,4],aovs[[i]][,1],1942,aovs[[i]][,5],rep("",length(predictor_names)),mar,ylim=c(0,9))
+    effects_barplot(aovs[[i]][,4],aovs[[i]][,1],1631,aovs[[i]][,5],rep("",length(predictor_names)),mar,ylim=c(0,9))
     box(bty='l')
     title(GoalNames[i])
   }
 }
 dev.off()
 
+
 #### Figure 3 ####
+predictors <- c("sample","ocean_days","seafood_eat","demoone_gender","demotwo_livedCanada","envr_org","envr_protest","demothree_income3","demothree_householdsize","rural","distance_FSA2","rec","jobs2","demoone_education2","demothree_age_num","political_party2")
 aovs <- summary.aov(fit)
-ind_lmc$rec2 <- ceiling(ind_lmc$rec/4)*4
+for(i in 11:28){
+  if(is.numeric(ind_lmc[,i])){
+    ind_lmc[,i] <- ordered(ind_lmc[,i])
+  }
+}
 
 # pdf(paste('figures/f3_users.pdf'),height=10,width=full)
 jpeg(paste('figures/f3_maineffects.jpg'),height=10,width=twothirds ,units = "in",res=res,qual=qual)
@@ -159,47 +176,70 @@ layout(matrix(c(1:10),nrow=5))
 par(mar=c(5,4,1,1))
 boxplot(FoodProvision~seafood_eat,data=ind_lmc)
 title(ylab='Food Provision',xlab='Seafood eating frequency (yr^-1)')
-fit <- aov(as.formula(paste(names(ind_lmc)[1]," ~",paste(predictors,collapse=" + "))),data=data.frame(cbind(ind_lmc[1:10],apply(ind_lmc[11:30],2,factor))))
-cld(glht(fit,linfct=mcp(political_party2="Tukey")))
-fit <- aov(as.formula(paste(names(ind_lmc)[1]," ~",paste(predictors,collapse=" + "))),data=ind_lmc)
-
-TukeyHSD(fit,"political_party2")
+fit <- aov(as.formula(paste("FoodProvision~",paste(predictors,collapse=" + "))),data=ind_lmc)
+x <- as.data.frame(cld(glht(fit,linfct=mcp(seafood_eat="Tukey")))$mcletters$Letters)
+axis(3,c(1:nrow(x)),labels=as.character(x[,1]),tick=FALSE,padj=1.5)
 
 boxplot(AboriginalNeeds~demothree_age_num,names=c("20-24","22-34","35-54","35-44","55-64","65+"),las=3,data=ind_lmc)
 title(ylab='Aboriginal Needs')
+fit <- aov(as.formula(paste("AboriginalNeeds~",paste(predictors,collapse=" + "))),data=ind_lmc)
+x <- as.data.frame(cld(glht(fit,linfct=mcp(demothree_age_num="Tukey")))$mcletters$Letters)
+axis(3,c(1:nrow(x)),labels=as.character(x[,1]),tick=FALSE,padj=1.5)
 
 boxplot(NaturalProducts~political_party2,data=ind_lmc,names=c('CPC','LIB','N/G','Other'))
 title(ylab='Natural Products')
+fit <- aov(as.formula(paste("NaturalProducts~",paste(predictors,collapse=" + "))),data=ind_lmc)
+x <- as.data.frame(cld(glht(fit,linfct=mcp(political_party2="Tukey")))$mcletters$Letters)
+axis(3,c(1:nrow(x)),labels=as.character(x[,1]),tick=FALSE,padj=1.5)
 
 boxplot(CarbonStorage~demothree_age_num,data=ind_lmc,names=c("20-24","22-34","35-54","35-44","55-64","65+"),las=3)
 title(ylab='CarbonStorage',xlab='Age')
+fit <- aov(as.formula(paste("CarbonStorage~",paste(predictors,collapse=" + "))),data=ind_lmc)
+x <- as.data.frame(cld(glht(fit,linfct=mcp(demothree_age_num="Tukey")))$mcletters$Letters)
+axis(3,c(1:nrow(x)),labels=as.character(x[,1]),tick=FALSE,padj=1.5)
 
 boxplot(CoastalProtection~jobs2,data=ind_lmc,names=c('Conser.','Extract.','None'))
 title(ylab='Coastal Protection',xlab='Type of job')
+fit <- aov(as.formula(paste("CoastalProtection~",paste(predictors,collapse=" + "))),data=ind_lmc)
+x <- as.data.frame(cld(glht(fit,linfct=mcp(jobs2="Tukey")))$mcletters$Letters)
+axis(3,c(1:nrow(x)),labels=as.character(x[,1]),tick=FALSE,padj=1.5)
 
 boxplot(CoastalLivelihoods~demothree_age_num,names=c("20-24","22-34","35-54","35-44","55-64","65+"),las=3,data=ind_lmc)
 title(ylab='CoastalLivelihoods')
+fit <- aov(as.formula(paste("CoastalLivelihoods~",paste(predictors,collapse=" + "))),data=ind_lmc)
+x <- as.data.frame(cld(glht(fit,linfct=mcp(demothree_age_num="Tukey")))$mcletters$Letters)
+axis(3,c(1:nrow(x)),labels=as.character(x[,1]),tick=FALSE,padj=1.5)
 
 boxplot(TourismRecreation~rec2,data=ind_lmc,names=c("0","1-4","5-8"))
 title(ylab='Tourism & Recreation',xlab='Number of Rec. Act.')
+fit <- aov(as.formula(paste("CoastalProtection~",paste(predictors,collapse=" + "))),data=ind_lmc)
+x <- as.data.frame(cld(glht(fit,linfct=mcp(jobs2="Tukey")))$mcletters$Letters)
+axis(3,c(1:nrow(x)),labels=as.character(x[,1]),tick=FALSE,padj=1.5)
 
 boxplot(IconicPlacesSPecies~demothree_age_num,names=c("20-24","22-34","35-54","35-44","55-64","65+"),las=3,data=ind_lmc)
 title(ylab='IconicPlacesSPecies')
+fit <- aov(as.formula(paste("IconicPlacesSPecies~",paste(predictors,collapse=" + "))),data=ind_lmc)
+x <- as.data.frame(cld(glht(fit,linfct=mcp(demothree_age_num="Tukey")))$mcletters$Letters)
+axis(3,c(1:nrow(x)),labels=as.character(x[,1]),tick=FALSE,padj=1.5)
 
 boxplot(CleanWaters~jobs2,data=ind_lmc,names=c('Conser.','Extract.','None'))
 title(ylab='CleanWaters',xlab='Type of job')
+fit <- aov(as.formula(paste("CleanWaters~",paste(predictors,collapse=" + "))),data=ind_lmc)
+x <- as.data.frame(cld(glht(fit,linfct=mcp(jobs2="Tukey")))$mcletters$Letters)
+axis(3,c(1:nrow(x)),labels=as.character(x[,1]),tick=FALSE,padj=1.5)
 
 boxplot(Biodiversity~demothree_age_num,data=ind_lmc,names=c("20-24","22-34","35-54","35-44","55-64","65+"),las=3)
 title(ylab='Biodiversity')
+fit <- aov(as.formula(paste("Biodiversity~",paste(predictors,collapse=" + "))),data=ind_lmc)
+x <- as.data.frame(cld(glht(fit,linfct=mcp(demothree_age_num="Tukey")))$mcletters$Letters)
+axis(3,c(1:nrow(x)),labels=as.character(x[,1]),tick=FALSE,padj=1.5)
 
 
 dev.off()
 
 
 #### Figure Appendix ####
-ind_lmc$distance_FSA2 <- round(ind_lmc$distance_FSA/200000)*200000
-ind_lmc$rec2 <- ceiling(ind_lmc$rec/4)*4
-ind_lmc$demothree_income3 <- as.numeric(ind_lmc$demothree_income2)/1000
+
 
 source('Appendix_figs.R')
 

@@ -142,10 +142,20 @@ raw$demothree_income2[raw$demothree_income=="8"] <- 250000
 raw$demothree_income2[raw$demothree_income=="9"] <- NA
 unique(raw$demothree_income)
 
+#### fix income ####
+raw$demotwo_livedCanada <- revalue(raw$demotwo_livedCanada,c("lessthan2"=1))
+raw$demotwo_livedCanada <- revalue(raw$demotwo_livedCanada,c("2to5"=3.5))
+raw$demotwo_livedCanada <- revalue(raw$demotwo_livedCanada,c("6to10"=8))
+raw$demotwo_livedCanada <- revalue(raw$demotwo_livedCanada,c("11to20"=15))
+raw$demotwo_livedCanada <- revalue(raw$demotwo_livedCanada,c("morethan20"=30))
+raw$demotwo_livedCanada <- as.numeric(levels(raw$demotwo_livedCanada)[raw$demotwo_livedCanada])
+
+unique(raw$demotwo_livedCanada)
+
 #envr org
-revalue(raw$envr_org,c("dontknow"=""))
-revalue(raw$envr_protest,c("dontknow"=""))
-revalue(raw$demoone_gender,c("noresponse"=""))
+raw$envr_org <- revalue(raw$envr_org,c("dontknow"=""))
+raw$envr_protest <- revalue(raw$envr_protest,c("dontknow"=""))
+raw$demoone_gender <- revalue(raw$demoone_gender,c("noresponse"=""))
 
 
 #### deal with missing values ####

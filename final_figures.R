@@ -193,7 +193,7 @@ jpeg(paste('figures/f3_maineffects.jpg'),height=10,width=twothirds ,units = "in"
 
 layout(matrix(c(1:10),nrow=5))
 par(mar=c(5,4,1,1))
-boxplot(FoodProvision~seafood_eat,data=ind_lmc)
+boxplot(FoodProvision~seafood_eat,data=ind_lmc,las=3)
 title(ylab='Food Provision',xlab='Seafood eating frequency (yr^-1)')
 fit <- summary(glm(as.formula(paste("FoodProvision~",paste(predictors,collapse=" + "))),data=ind_lmc))$coefficients
 pvalue <- round(fit[row.names(fit)=="seafood_eat",4],3)
@@ -228,7 +228,7 @@ mtext(paste("S = ",signif(fit[row.names(fit)=="demothree_age_num",1],2),
             "p =",pvalue),side=3,cex=0.7)
 
 
-boxplot(CoastalProtection~jobs2,data=ind_lmc,names=c('Conser.','Extract.','None'))
+boxplot(CoastalProtection~jobs2,data=ind_lmc,names=c('Cons.','Extr.','None'))
 title(ylab='Coastal Protection',xlab='Type of job')
 fit <- aov(as.formula(paste("CoastalProtection~",paste(predictors,collapse=" + "))),data=ind_lmc)
 x <- as.data.frame(cld(glht(fit,linfct=mcp(jobs2="Tukey")))$mcletters$Letters)
@@ -246,7 +246,7 @@ mtext(paste("S = ",signif(fit[row.names(fit)=="demothree_age_num",1],2),
 
 boxplot(TourismRecreation~rec2,data=ind_lmc,names=c("0","1-4","5-8"))
 title(ylab='Tourism & Recreation',xlab='Number of Rec. Act.')
-fit <- aov(as.formula(paste("CoastalProtection~",paste(predictors,collapse=" + "))),data=ind_lmc)$coefficients
+fit <- summary(glm(as.formula(paste("TourismRecreation~",paste(predictors,collapse=" + "))),data=ind_lmc))$coefficients
 pvalue <- round(fit[row.names(fit)=="rec",4],3) 
 if(pvalue==0) pvalue <- "<0.001" 
 mtext(paste("S = ",signif(fit[row.names(fit)=="rec",1],2),
@@ -264,7 +264,7 @@ mtext(paste("S = ",signif(fit[row.names(fit)=="demothree_age_num",1],2),
             "p =",pvalue),side=3,cex=0.7)
 
 
-boxplot(CleanWaters~jobs2,data=ind_lmc,names=c('Conser.','Extract.','None'))
+boxplot(CleanWaters~jobs2,data=ind_lmc,names=c('Cons.','Extr.','None'))
 title(ylab='CleanWaters',xlab='Type of job')
 fit <- aov(as.formula(paste("CleanWaters~",paste(predictors,collapse=" + "))),data=ind_lmc)
 x <- as.data.frame(cld(glht(fit,linfct=mcp(jobs2="Tukey")))$mcletters$Letters)
@@ -316,7 +316,7 @@ mtext(paste("S = ",signif(fit[row.names(fit)=="demothree_age_num",1],2),
             "p =",pvalue),side=3,cex=0.6)
 
 
-boxplot(log(E_NE_ratio)~seafood_eat,data=ind_lmc)
+boxplot(log(E_NE_ratio)~seafood_eat,data=ind_lmc,las=3)
 title(ylab='log(E:NE)',xlab='Seafood eating frequency (yr^-1)')
 fit <- summary(glm(as.formula(paste("log(E_NE_ratio)~",paste(predictors,collapse=" + "))),data=ind_lmc))$coefficients
 pvalue <- round(fit[row.names(fit)=="seafood_eat",4],3)
@@ -341,7 +341,7 @@ mtext(paste("S = ",signif(fit[row.names(fit)=="rec",1],2),
             "SE =",signif(fit[row.names(fit)=="rec",2],2),
             "p =",pvalue),side=3,cex=0.6)
 
-boxplot(log(E_NE_ratio)~as.character(envr_org),data=ind_lmc,names=c('Unknown','No','Yes'))
+boxplot(log(E_NE_ratio)~as.character(envr_org),data=ind_lmc,names=c('No','Yes'))
 title(ylab='log(E:NE)',xlab='ENGO Membership')
 fit <- aov(as.formula(paste("log(E_NE_ratio)~",paste(predictors,collapse=" + "))),data=ind_lmc)
 x <- as.data.frame(cld(glht(fit,linfct=mcp(envr_org="Tukey")))$mcletters$Letters)
@@ -353,7 +353,7 @@ fit <- aov(as.formula(paste("log(E_NE_ratio)~",paste(predictors,collapse=" + "))
 x <- as.data.frame(cld(glht(fit,linfct=mcp(political_party2="Tukey")))$mcletters$Letters)
 axis(3,c(1:nrow(x)),labels=as.character(x[,1]),tick=FALSE,padj=1.5)
 
-boxplot(log(E_NE_ratio)~as.character(envr_protest),data=ind_lmc,names=c('Unknown','No','Yes'))
+boxplot(log(E_NE_ratio)~as.character(envr_protest),data=ind_lmc,names=c('No','Yes'))
 title(ylab='log(E:NE)',xlab='Enviromental Protest')
 fit <- aov(as.formula(paste("log(E_NE_ratio)~",paste(predictors,collapse=" + "))),data=ind_lmc)
 x <- as.data.frame(cld(glht(fit,linfct=mcp(envr_protest="Tukey")))$mcletters$Letters)

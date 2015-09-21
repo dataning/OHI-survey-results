@@ -140,9 +140,10 @@ raw$demothree_income2[raw$demothree_income=="6"] <- 125000
 raw$demothree_income2[raw$demothree_income=="7"] <- 175000
 raw$demothree_income2[raw$demothree_income=="8"] <- 250000
 raw$demothree_income2[raw$demothree_income=="9"] <- NA
+raw$demothree_income2 <- as.numeric(raw$demothree_income2)
 unique(raw$demothree_income)
 
-#### fix income ####
+#### fix lived in Canada ####
 raw$demotwo_livedCanada <- revalue(raw$demotwo_livedCanada,c("lessthan2"=1))
 raw$demotwo_livedCanada <- revalue(raw$demotwo_livedCanada,c("2to5"=3.5))
 raw$demotwo_livedCanada <- revalue(raw$demotwo_livedCanada,c("6to10"=8))
@@ -162,6 +163,8 @@ raw$demoone_gender <- revalue(raw$demoone_gender,c("noresponse"=""))
 raw$envr_org[raw$envr_org==""] <- "dontknow"
 raw$envr_protest[raw$envr_protest==""] <- "dontknow"
 raw$demoone_gender[raw$demoone_gender==""] <- "noresponse"
+raw$demoone_education2[raw$demoone_education==""] <- 'unknown'
+
 
 stacked <- raw %>% gather(DCE_pg,answer,DCE_least1,DCE_least2,DCE_least3,DCE_least4,DCE_least5,DCE_least6,DCE_least7,DCE_least8,DCE_least9,DCE_least10,DCE_most1,DCE_most2,DCE_most3,DCE_most4,DCE_most5,DCE_most6,DCE_most7,DCE_most8,DCE_most9,DCE_most10)
 stacked$pg <- as.numeric(gsub("[^0-9]+","",as.character(stacked$DCE_pg)))

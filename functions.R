@@ -61,3 +61,21 @@ max.diff.rank.ordered.logit.with.ties = function(stacked.data){
   pars = c(0, solution$par)
   names(pars) = dimnames(stacked.data)[[2]]
   list(log.likelihood = solution$value, coef = pars)}
+
+
+effects_barplot <- function(f,n1,n2,p,predictor_names=NULL,mar=c(7,5,1,2),ylim=NULL){
+  require(compute.es)
+  par(mar=mar)
+  x <- fes(f,n1,n2,verbose=F)
+  if(is.null(ylim)) ylim <- c(0,max(x$d+sqrt(x$var.d),na.rm=TRUE)*1.1)
+  mp <- barplot(x$d,ylim=ylim,ylab="Effect Size (Cohen's d)")
+  axis(1,mp[-length(mp)],predictor_names,las=2)
+  segments(mp[-length(mp)], x$d, mp[-length(mp)], x$d + sqrt(x$var.d))
+  segments(mp[-length(mp)] - 0.2, x$d + sqrt(x$var.d), mp[-length(mp)] + 0.2, x$d + sqrt(x$var.d))
+  significant <- p<0.05&p>0.01
+  text(mp[-length(mp)][significant], (ylim[2]/10)+(x$d[-length(mp)][significant] + sqrt(x$var.d[-length(mp)][significant])),"*")
+  significant <- p<0.01&p>0.001
+  text(mp[-length(mp)][significant], (ylim[2]/10)+(x$d[-length(mp)][significant] + sqrt(x$var.d[-length(mp)][significant])),"**")
+  significant <- p<0.001
+  text(mp[-length(mp)][significant], (ylim[2]/10)+(x$d[-length(mp)][significant] + sqrt(x$var.d[-length(mp)][significant])),"***")
+}

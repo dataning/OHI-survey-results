@@ -1,4 +1,5 @@
-source("anova.R")
+source("functions.R")
+source("logitmodelcoef_individuals.R")
 
 res <- 400
 qual <- 100
@@ -121,8 +122,8 @@ LG_data_2class[,1:6] %>% arrange(desc(Class2))
 #### Figure 2 ####
 library(multcomp)
 
-predictors <- c("sample","ocean_days","seafood_eat","demoone_gender","demotwo_livedCanada","envr_org","envr_protest","demothree_income2","demothree_householdsize","rural","distance_FSA","rec","jobs2","demoone_education2","demothree_age_num","political_party2")
-predictor_names <- c("province","ocean days","seafood eat","gender","lived in Canada","envr org","envr protest","income","householdsize","rural","distance","recreation","job type","education","age","political party")
+predictors <- c("sample","ocean_days","seafood_eat","demoone_gender","envr_org","envr_protest","demothree_income2","demothree_householdsize","rural","distance_FSA","rec","jobs2","demoone_education2","demothree_age_num","political_party2")
+predictor_names <- c("province","ocean days","seafood eat","gender","envr org","envr protest","income","householdsize","rural","distance","recreation","job type","education","age","political party")
 
 ind_lmc <- cbind(lmc2,raw[,names(raw)%in%predictors])
 ind_lmc$distance_FSA2 <- round(ind_lmc$distance_FSA/200000)*200000
@@ -149,7 +150,7 @@ for(i in 1:10){
   if(i==5|i==10){
     mar <- c(7,5,1,1)
     effects_barplot(fit$`F value`,fit$Df,1659,fit$`Pr(>F)`,rep("",length(predictor_names)),mar,ylim=c(0,9))
-    text(cex=1, x=seq(1,19,by=1.2)+0.4, y=-0.7, predictor_names, xpd=TRUE, srt=50, pos=2)
+    text(cex=1, x=seq(1,18,by=1.2)+0.4, y=-0.7, predictor_names, xpd=TRUE, srt=50, pos=2)
     box(bty='l')
     title(GoalNames[i])
   } else {
@@ -202,14 +203,11 @@ mtext(paste("S = ",signif(fit[row.names(fit)=="seafood_eat",1],2),
             "SE =",signif(fit[row.names(fit)=="seafood_eat",2],2),
             "p =",pvalue),side=3,cex=0.7)
 
-boxplot(AboriginalNeeds~demothree_age_num,names=c("20-24","22-34","35-54","35-44","55-64","65+"),las=3,data=ind_lmc)
+boxplot(AboriginalNeeds~as.character(envr_org),data=ind_lmc,names=c('No','Yes'))
 title(ylab='Aboriginal Needs')
-fit <- summary(glm(as.formula(paste("AboriginalNeeds~",paste(predictors,collapse=" + "))),data=ind_lmc))$coefficients
-pvalue <- round(fit[row.names(fit)=="demothree_age_num",4],3) 
-if(pvalue==0) pvalue <- "<0.001" 
-mtext(paste("S = ",signif(fit[row.names(fit)=="demothree_age_num",1],2),
-            "SE =",signif(fit[row.names(fit)=="demothree_age_num",2],2),
-            "p =",pvalue),side=3,cex=0.7)
+fit <- aov(as.formula(paste("AboriginalNeeds~",paste(predictors,collapse=" + "))),data=ind_lmc)
+x <- as.data.frame(cld(glht(fit,linfct=mcp(envr_org="Tukey")))$mcletters$Letters)
+axis(3,c(1:nrow(x)),labels=as.character(x[,1]),tick=FALSE,padj=1.5)
 
 
 boxplot(NaturalProducts~political_party2,data=ind_lmc,names=c('CPC','LIB','N/G','Other'))
@@ -228,7 +226,7 @@ mtext(paste("S = ",signif(fit[row.names(fit)=="demothree_age_num",1],2),
             "p =",pvalue),side=3,cex=0.7)
 
 
-boxplot(CoastalProtection~jobs2,data=ind_lmc,names=c('Cons.','Extr.','None'))
+boxplot(CoastalProtection~jobs2,data=ind_lmc,names=c('Conser.','Extract.','None'))
 title(ylab='Coastal Protection',xlab='Type of job')
 fit <- aov(as.formula(paste("CoastalProtection~",paste(predictors,collapse=" + "))),data=ind_lmc)
 x <- as.data.frame(cld(glht(fit,linfct=mcp(jobs2="Tukey")))$mcletters$Letters)
@@ -279,9 +277,6 @@ mtext(paste("S = ",signif(fit[row.names(fit)=="demothree_age_num",1],2),
             "SE =",signif(fit[row.names(fit)=="demothree_age_num",2],2),
             "p =",pvalue),side=3,cex=0.7)
 
-
-
-
 dev.off()
 
 
@@ -295,6 +290,8 @@ sum(lmc_categorized$E>lmc_categorized$NE)/nrow(lmc_categorized)
 ind_lmc$E_NE_ratio <- lmc_categorized$E/lmc_categorized$NE
 fit <- aov(as.formula(paste("log(ind_lmc$E_NE_ratio) ~",paste(predictors,collapse=" + "))),data=ind_lmc)
 summary(fit)
+
+sum(log(ind_lmc$E_NE_ratio)<0)/nrow(ind_lmc)
 
 # pdf(paste('figures/f3_users.pdf'),height=10,width=full)
 jpeg(paste('figures/f4_E_VS_NE.jpg'),height=8,width=twothirds ,units = "in",res=res,qual=qual)
@@ -353,8 +350,8 @@ fit <- aov(as.formula(paste("log(E_NE_ratio)~",paste(predictors,collapse=" + "))
 x <- as.data.frame(cld(glht(fit,linfct=mcp(political_party2="Tukey")))$mcletters$Letters)
 axis(3,c(1:nrow(x)),labels=as.character(x[,1]),tick=FALSE,padj=1.5)
 
-boxplot(log(E_NE_ratio)~as.character(envr_protest),data=ind_lmc,names=c('No','Yes'))
-title(ylab='log(E:NE)',xlab='Enviromental Protest')
+boxplot(log(E_NE_ratio)~as.character(demoone_gender),data=ind_lmc,names=c('Female','Male'))
+title(ylab='log(E:NE)')
 fit <- aov(as.formula(paste("log(E_NE_ratio)~",paste(predictors,collapse=" + "))),data=ind_lmc)
 x <- as.data.frame(cld(glht(fit,linfct=mcp(envr_protest="Tukey")))$mcletters$Letters)
 axis(3,c(1:nrow(x)),labels=as.character(x[,1]),tick=FALSE,padj=1.5)

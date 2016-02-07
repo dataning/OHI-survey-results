@@ -39,7 +39,7 @@ library(tidyr)
 detach(package:plyr)
 
 Likert <- raw %>% 
-  select(ends_with("general")) %>%
+  dplyr::select(ends_with("general")) %>%
   gather(goal) %>% 
   group_by(goal) %>% 
   summarize(mean_imp=mean(value,na.rm=TRUE),
@@ -123,12 +123,16 @@ LG_data_2class[,1:6] %>% arrange(desc(Class2))
 library(multcomp)
 
 predictors <- c("sample","ocean_days","seafood_eat","demoone_gender","envr_org","envr_protest","demothree_income2","demothree_householdsize","rural","distance_FSA","rec","jobs2","demoone_education2","demothree_age_num","political_party2")
-predictor_names <- c("province","ocean days","seafood eat","gender","envr org","envr protest","income","householdsize","rural","distance","recreation","job type","education","age","political party")
+predictor_names <- c("region","ocean days","seafood eat","gender","envr org","envr protest","income","householdsize","rural","distance","recreation","job type","education","age","political party")
 
 ind_lmc <- cbind(lmc2,raw[,names(raw)%in%predictors])
 ind_lmc$distance_FSA2 <- round(ind_lmc$distance_FSA/200000)*200000
 ind_lmc$rec2 <- ceiling(ind_lmc$rec/4)*4
 ind_lmc$demothree_income3 <- as.numeric(ind_lmc$demothree_income2)/1000
+levels(ind_lmc$envr_org)[1] <- NA
+levels(ind_lmc$envr_protest)[1] <- NA
+levels(ind_lmc$demoone_gender)[1] <- NA
+
 
 for(i in 11:28){
   if(is.character(ind_lmc[,i])){
@@ -299,7 +303,7 @@ jpeg(paste('figures/f4_E_VS_NE.jpg'),height=8,width=twothirds ,units = "in",res=
 layout(matrix(c(1:8),nrow=4))
 
 effects_barplot(summary(fit)[[1]][,4],summary(fit)[[1]][,1],1658,summary(fit)[[1]][,5],rep("",length(predictor_names)),mar=c(5,4,1,1),ylim=c(0,9))
-text(cex=0.75, x=seq(1,19,by=1.2)+0.4, y=-0.7, predictor_names, xpd=TRUE, srt=50, pos=2)
+text(cex=0.75, x=seq(1,18,by=1.2)+0.4, y=-0.7, predictor_names, xpd=TRUE, srt=50, pos=2)
 
 par(mar=c(5,4,1,1))
 

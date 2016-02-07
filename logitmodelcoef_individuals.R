@@ -8,8 +8,8 @@ DCE_data2 <- data.frame(cbind(names=as.character(stacked3$name),answer=stacked3$
 DCE_data2 <- spread(DCE_data2,rep_scale,answer)
 names(DCE_data2)=c('names','DCE_pg','i','DCE_least','DCE_most')
 DCE_data2$i <- as.numeric(DCE_data2$i)
-DCE_data2$DCE_least <- as.numeric(DCE_data2$DCE_least)
-DCE_data2$DCE_most <- as.numeric(DCE_data2$DCE_most)
+DCE_data2$DCE_least <- as.numeric(as.character(DCE_data2$DCE_least))
+DCE_data2$DCE_most <- as.numeric(as.character(DCE_data2$DCE_most))
 
 ###### make stacked layout ####
 card_key <- read.csv("card_key.csv") 

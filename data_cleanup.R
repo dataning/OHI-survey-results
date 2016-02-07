@@ -160,9 +160,9 @@ raw$demoone_gender <- revalue(raw$demoone_gender,c("noresponse"=""))
 
 
 #### deal with missing values ####
-raw$envr_org[raw$envr_org==""] <- "dontknow"
-raw$envr_protest[raw$envr_protest==""] <- "dontknow"
-raw$demoone_gender[raw$demoone_gender==""] <- "noresponse"
+levels(raw$envr_org)[1] <- "dontknow"
+levels(raw$envr_protest)[1] <- "dontknow"
+levels(raw$demoone_gender)[1] <- "noresponse"
 raw$demoone_education2[raw$demoone_education==""] <- 'unknown'
 
 
@@ -176,8 +176,7 @@ stacked$choice_set <- as.numeric(stacked$choice_set)
 
 stacked2 <- stacked[order(stacked$name,stacked$choice_set),] 
 
-#### remove useless variables ####
-names(stacked2)
+#### remove useless variacked2)
 keeps <- c("pg","ID","name","choice_set","answer","rep_scale","seq","task",
            "sample","ocean_days","seafood_eat","demoone_gender","demoone_education","demoone_education2","demotwo_livedCanada",
            "envr_org","envr_protest","political_party2","demothree_income2","demothree_householdsize",

@@ -4,6 +4,7 @@ library(multcomp)
 
 
 boxplots <- function(filename,var,varlabel,max_h,width,ncol,res,qual){
+  panel <- 1
   fitaov <- aov(as.formula(paste(var,"~",paste(predictors,collapse=" + "))),data=ind_lmc)
   fitglm <- summary(glm(as.formula(paste("FoodProvision~",paste(predictors,collapse=" + "))),data=ind_lmc))$coefficients
   
@@ -20,6 +21,7 @@ boxplots <- function(filename,var,varlabel,max_h,width,ncol,res,qual){
     title(ylab=varlabel)
     x <- as.data.frame(cld(glht(fitaov,linfct=mcp(sample="Tukey")))$mcletters$Letters)
     axis(3,c(1:nrow(x)),labels=as.character(x[,1]),tick=FALSE,padj=1.5)
+    mtext(paste0(LETTERS[panel],")"),adj=-0.3,cex=2/3); panel <- panel+1
   }
   #ocean_days
   if(significant[2]){
@@ -31,6 +33,7 @@ boxplots <- function(filename,var,varlabel,max_h,width,ncol,res,qual){
       mtext(paste("S = ",signif(fitglm[row.names(fitglm)=="ocean_days",1],2),
                   "SE =",signif(fitglm[row.names(fitglm)=="ocean_days",2],2),
                   "p =",pvalue),side=3,cex=0.6)
+      mtext(paste0(LETTERS[panel],")"),adj=-0.3,cex=2/3); panel <- panel+1
     }
   }
   #seafood_eat
@@ -43,6 +46,7 @@ boxplots <- function(filename,var,varlabel,max_h,width,ncol,res,qual){
       mtext(paste("S = ",signif(fitglm[row.names(fitglm)=="seafood_eat",1],2),
                   "SE =",signif(fitglm[row.names(fitglm)=="seafood_eat",2],2),
                   "p =",pvalue),side=3,cex=0.6)
+      mtext(paste0(LETTERS[panel],")"),adj=-0.3,cex=2/3); panel <- panel+1
     }
   }
   #gender
@@ -51,6 +55,7 @@ boxplots <- function(filename,var,varlabel,max_h,width,ncol,res,qual){
     title(ylab=varlabel)
     x <- as.data.frame(cld(glht(fitaov,linfct=mcp(demoone_gender="Tukey")))$mcletters$Letters)
     axis(3,c(1:nrow(x)),labels=as.character(x[,1]),tick=FALSE,padj=1.5)
+    mtext(paste0(LETTERS[panel],")"),adj=-0.3,cex=2/3); panel <- panel+1
   }
   #envr_org
   if(significant[5]){
@@ -58,6 +63,7 @@ boxplots <- function(filename,var,varlabel,max_h,width,ncol,res,qual){
     title(ylab=varlabel,xlab='ENGO Membership')
     x <- as.data.frame(cld(glht(fitaov,linfct=mcp(envr_org="Tukey")))$mcletters$Letters)
     axis(3,c(1:nrow(x)),labels=as.character(x[,1]),tick=FALSE,padj=1.5)
+    mtext(paste0(LETTERS[panel],")"),adj=-0.3,cex=2/3); panel <- panel+1
   }
   #envr_protest
   if(significant[6]){
@@ -65,6 +71,7 @@ boxplots <- function(filename,var,varlabel,max_h,width,ncol,res,qual){
     title(ylab=varlabel,xlab='Enviromental Protest')
     x <- as.data.frame(cld(glht(fitaov,linfct=mcp(envr_protest="Tukey")))$mcletters$Letters)
     axis(3,c(1:nrow(x)),labels=as.character(x[,1]),tick=FALSE,padj=1.5)
+    mtext(paste0(LETTERS[panel],")"),adj=-0.3,cex=2/3); panel <- panel+1
   }
   #income
   if(significant[7]){
@@ -76,6 +83,7 @@ boxplots <- function(filename,var,varlabel,max_h,width,ncol,res,qual){
       mtext(paste("S = ",signif(fitglm[row.names(fitglm)=="demothree_income2",1],2),
                   "SE =",signif(fitglm[row.names(fitglm)=="demothree_income2",2],2),
                   "p =",pvalue),side=3,cex=0.6)
+      mtext(paste0(LETTERS[panel],")"),adj=-0.3,cex=2/3); panel <- panel+1
     }
   }
   #demothree_householdsize
@@ -88,6 +96,7 @@ boxplots <- function(filename,var,varlabel,max_h,width,ncol,res,qual){
       mtext(paste("S = ",signif(fitglm[row.names(fitglm)=="demothree_householdsize",1],2),
                   "SE =",signif(fitglm[row.names(fitglm)=="demothree_householdsize",2],2),
                   "p =",pvalue),side=3,cex=0.6)
+      mtext(paste0(LETTERS[panel],")"),adj=-0.3,cex=2/3); panel <- panel+1
     }
   }
   #rural
@@ -96,6 +105,7 @@ boxplots <- function(filename,var,varlabel,max_h,width,ncol,res,qual){
     title(ylab=varlabel)
     x <- as.data.frame(cld(glht(fitaov,linfct=mcp(rural="Tukey")))$mcletters$Letters)
     axis(3,c(1:nrow(x)),labels=as.character(x[,1]),tick=FALSE,padj=1.5)
+    mtext(paste0(LETTERS[panel],")"),adj=-0.3,cex=2/3); panel <- panel+1
   }
   #distance_FSA
   if(significant[10]){
@@ -107,6 +117,7 @@ boxplots <- function(filename,var,varlabel,max_h,width,ncol,res,qual){
       mtext(paste("S = ",signif(fitglm[row.names(fitglm)=="distance_FSA",1],2),
                   "SE =",signif(fitglm[row.names(fitglm)=="distance_FSA",2],2),
                   "p =",pvalue),side=3,cex=0.6)
+      mtext(paste0(LETTERS[panel],")"),adj=-0.3,cex=2/3); panel <- panel+1
     }
   }
   #rec
@@ -119,6 +130,7 @@ boxplots <- function(filename,var,varlabel,max_h,width,ncol,res,qual){
       mtext(paste("S = ",signif(fitglm[row.names(fitglm)=="rec",1],2),
                   "SE =",signif(fitglm[row.names(fitglm)=="rec",2],2),
                   "p =",pvalue),side=3,cex=0.6)
+      mtext(paste0(LETTERS[panel],")"),adj=-0.3,cex=2/3); panel <- panel+1
     }
   }
   #job
@@ -127,6 +139,7 @@ boxplots <- function(filename,var,varlabel,max_h,width,ncol,res,qual){
     title(ylab=varlabel,xlab='Type of job')
     x <- as.data.frame(cld(glht(fitaov,linfct=mcp(jobs2="Tukey")))$mcletters$Letters)
     axis(3,c(1:nrow(x)),labels=as.character(x[,1]),tick=FALSE,padj=1.5)
+    mtext(paste0(LETTERS[panel],")"),adj=-0.3,cex=2/3); panel <- panel+1
   }
   #education
   if(significant[13]){
@@ -134,6 +147,7 @@ boxplots <- function(filename,var,varlabel,max_h,width,ncol,res,qual){
     title(ylab=varlabel,xlab='Education')
     x <- as.data.frame(cld(glht(fitaov,linfct=mcp(demoone_education2="Tukey")))$mcletters$Letters)
     axis(3,c(1:nrow(x)),labels=as.character(x[,1]),tick=FALSE,padj=1.5)
+    mtext(paste0(LETTERS[panel],")"),adj=-0.3,cex=2/3); panel <- panel+1
   }
   #age
   if(significant[14]){
@@ -141,18 +155,20 @@ boxplots <- function(filename,var,varlabel,max_h,width,ncol,res,qual){
     if(pvalue==0) pvalue <- "<0.001"
     if(pvalue<=0.05){
       boxplot(get(var)~demothree_age_num,names=c("20-24","22-34","35-54","35-44","55-64","65+"),las=3,data=ind_lmc)
-      title(ylab=varlabel)
+      title(ylab=varlabel,xlab='Age')
       mtext(paste("S = ",signif(fitglm[row.names(fitglm)=="demothree_age_num",1],2),
                   "SE =",signif(fitglm[row.names(fitglm)=="demothree_age_num",2],2),
                   "p =",pvalue),side=3,cex=0.6)
+      mtext(paste0(LETTERS[panel],")"),adj=-0.3,cex=2/3); panel <- panel+1
     }
   }
   #Political party
   if(significant[15]){
     boxplot(get(var)~political_party2,data=ind_lmc,names=c('CPC','LIB','N/G','Other'))
-    title(ylab=varlabel)
+    title(ylab=varlabel,xlab='Political Party')
     x <- as.data.frame(cld(glht(fitaov,linfct=mcp(political_party2="Tukey")))$mcletters$Letters)
     axis(3,c(1:nrow(x)),labels=as.character(x[,1]),tick=FALSE,padj=1.5)
+    mtext(paste0(LETTERS[panel],")"),adj=-0.3,cex=2/3); panel <- panel+1
   }
 
   

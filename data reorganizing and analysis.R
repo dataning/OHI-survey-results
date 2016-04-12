@@ -126,6 +126,24 @@ all_data=all_data[all_data$sample!="BC subsample",]
 # DCE_data=DCE_data[all_data$demothree_age==Prov,]
 # all_data=all_data[all_data$demothree_age==Prov,]
 
+# # filter by pol party
+# #### fix political party ####
+# all_data$political_party2 <- as.character(all_data$political_party)
+# all_data$political_party2[all_data$political_party=="Bloc"] <- "Other"
+# all_data$political_party2[all_data$political_party=="CPC"] <- "CPC"
+# all_data$political_party2[all_data$political_party=="green"] <- "NDP/Green"
+# all_data$political_party2[all_data$political_party=="liberal"] <- "Liberal"
+# all_data$political_party2[all_data$political_party=="NDP"] <- "NDP/Green"
+# all_data$political_party2[all_data$political_party=="noparty"] <- "Other"
+# all_data$political_party2[all_data$political_party=="dontknow"] <- "Other"
+# all_data$political_party2[all_data$political_party=="noresponse"] <- "Other"
+# all_data$political_party2[all_data$political_party==""] <- "Other"
+# 
+# unique(all_data$political_party2)
+# Prov="Other"
+# DCE_data=DCE_data[all_data$political_party2==Prov,]
+# all_data=all_data[all_data$political_party2==Prov,]
+
 # find which goals are in each set
 for(i in 1:10){
   if(i==1) {
@@ -339,5 +357,5 @@ weights$equal <- 1
 
 
 write.csv(weights,"weights.csv")
-write.csv(weights,paste0("weights_",Prov,".csv"))
+# write.csv(weights,paste0("weights_",Prov,".csv"))
 

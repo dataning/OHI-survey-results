@@ -21,6 +21,8 @@ GoalNames = c("Food Provision",
 
 #### Figure 1 ####
 library(readxl)
+require(PMCMR)
+
 # 1 class
 LG_data_1class <- read_excel("Latent Gold/final_analyses.xlsx",sheet=1,col_names=T,skip=4)[1:18,1:8]
 
@@ -37,6 +39,9 @@ LG_data_1class$Class1 <- LG_data_1class$Class1/sum(LG_data_1class$Class1)*10
 library(dplyr)
 library(tidyr)
 detach(package:plyr)
+library(PMCMR)
+library(HH)
+
 
 Likert <- raw %>% 
   dplyr::select(ends_with("general")) %>%
@@ -46,6 +51,14 @@ Likert <- raw %>%
             sd_imp=sd(value,na.rm=TRUE))
 
 Likert <- Likert[c(7,1,9,3,6,5,10,8,4,2),]
+
+# stats
+Likert2 <- raw %>% 
+  dplyr::select(ends_with("general")) %>%
+  gather(goal)
+Likert2$goal <- as.factor(Likert2$goal)
+kruskal.test(value ~ goal, data = Likert2)
+posthoc.kruskal.nemenyi.test(value ~ goal, data = Likert2)
 
 # plot
 
@@ -59,13 +72,24 @@ hh <- t(Likert$mean_imp)
 se <- t(Likert$sd_imp)
 
 # colnames(hh) <- LG_data_1class$Attributes
-mp <- barplot(hh,las=3,ylim=c(0,1.2*max(hh+se)),cex.axis=1.5)
+mp <- barplot(hh,las=3,ylim=c(0,5.5),cex.axis=1.5)
 segments(mp, hh, mp, hh + se)
 segments(mp+0.2, hh + se, mp-0.2, hh + se)
 title(ylab='Likert Importance',cex.lab=1.5)
 axis(1,at=mp,labels=F)
 box(bty='l')
 mtext("A)",adj=-0.2)
+x <- c("a","b","c","d","c","be","e","be","f","g")
+x <- x[c(7,1,9,3,6,5,10,8,4,2)]
+axis(3,at=mp,labels=as.character(x),tick=FALSE,padj=1.5)
+# Likert2 <- table(Likert2) %>% data.frame()
+# likert(goal ~ value , value='Freq', data=Likert2,
+#        as.percent=TRUE,
+#        ylab="Percent Relative Ranking\n Low                                    Neutral                                 High",
+#        xlab="Communication Category", 
+#        main="Ranking of Graduate Training",
+#        horizontal = FALSE,
+#        rightAxis = FALSE)
 
 # latent gold
 par(mar=c(1,5,1,0))
@@ -80,7 +104,6 @@ title(ylab='Relative Importance',cex.lab=1.5)
 axis(1,at=mp,labels=F)
 box(bty='l')
 mtext("B)",adj=-0.2)
-
 
 # 2 classes
 LG_data_2class <- read_excel("Latent Gold/final_analyses.xlsx",sheet=2,col_names=T,skip=4)[1:18,1:13]
@@ -174,6 +197,10 @@ dev.off()
 
 #### Figure 3 ####
 require(multcomp)
+
+ind_lmc_rescaled <- ind_lmc
+ind_lmc_rescaled[,1:10] <- ind_lmc_rescaled[,1:10]/sum(apply(ind_lmc_rescaled[,1:10],2,mean))*10
+
 # predictors <- c("sample","ocean_days","seafood_eat","demoone_gender","demotwo_livedCanada","envr_org","envr_protest","demothree_income3","demothree_householdsize","rural","distance_FSA2","rec","jobs2","demoone_education2","demothree_age_num","political_party2")
 # aovs <- summary.aov(fit)
 # for(i in 11:28){
@@ -203,9 +230,9 @@ jpeg(paste('figures/f3_maineffects.jpg'),height=10,width=full ,units = "in",res=
 
 layout(matrix(c(1:10),nrow=5))
 par(mar=c(5,4,1,1))
-boxplot(FoodProvision~seafood_eat,data=ind_lmc,las=3)
+boxplot(FoodProvision~seafood_eat,data=ind_lmc_rescaled,las=3)
 mtext('Food Provision',2,padj=-3.5,cex=2/3);title(xlab='Seafood eating frequency (yr^-1)')
-fit <- summary(glm(as.formula(paste("FoodProvision~",paste(predictors,collapse=" + "))),data=ind_lmc))$coefficients
+fit <- summary(glm(as.formula(paste("FoodProvision~",paste(predictors,collapse=" + "))),data=ind_lmc_rescaled))$coefficients
 pvalue <- round(fit[row.names(fit)=="seafood_eat",4],3)
 if(pvalue==0) pvalue <- "<0.001"
 mtext(paste("S = ",signif(fit[row.names(fit)=="seafood_eat",1],2),
@@ -214,24 +241,24 @@ mtext(paste("S = ",signif(fit[row.names(fit)=="seafood_eat",1],2),
 mtext("A)",adj=-0.2,cex=2/3)
 
 
-boxplot(AboriginalNeeds~as.character(envr_org),data=ind_lmc,names=c('No','Yes'))
+boxplot(AboriginalNeeds~as.character(envr_org),data=ind_lmc_rescaled,names=c('No','Yes'))
 mtext('Aboriginal Needs',2,padj=-3.5,cex=2/3);title(xlab='ENGO Membership')
-fit <- aov(as.formula(paste("AboriginalNeeds~",paste(predictors,collapse=" + "))),data=ind_lmc)
+fit <- aov(as.formula(paste("AboriginalNeeds~",paste(predictors,collapse=" + "))),data=ind_lmc_rescaled)
 x <- as.data.frame(cld(glht(fit,linfct=mcp(envr_org="Tukey")))$mcletters$Letters)
 axis(3,c(1:nrow(x)),labels=as.character(x[,1]),tick=FALSE,padj=1.5)
 mtext("B)",adj=-0.2,cex=2/3)
 
 
-boxplot(NaturalProducts~political_party2,data=ind_lmc,names=c('CPC','LIB','N/G','Other'))
+boxplot(NaturalProducts~political_party2,data=ind_lmc_rescaled,names=c('CPC','LIB','NDP/Green','Other'))
 mtext('Natural Products',2,padj=-3.5,cex=2/3);title(xlab='Political Party')
-fit <- aov(as.formula(paste("NaturalProducts~",paste(predictors,collapse=" + "))),data=ind_lmc)
+fit <- aov(as.formula(paste("NaturalProducts~",paste(predictors,collapse=" + "))),data=ind_lmc_rescaled)
 x <- as.data.frame(cld(glht(fit,linfct=mcp(political_party2="Tukey")))$mcletters$Letters)
 axis(3,c(1:nrow(x)),labels=as.character(x[,1]),tick=FALSE,padj=1.5)
 mtext("C)",adj=-0.2,cex=2/3)
 
-boxplot(CarbonStorage~demothree_age_num,data=ind_lmc,names=c("20-24","22-34","35-54","35-44","55-64","65+"),las=3)
+boxplot(CarbonStorage~demothree_age_num,data=ind_lmc_rescaled,names=c("20-24","22-34","35-54","35-44","55-64","65+"),las=3)
 mtext('Carbon Storage',2,padj=-3.5,cex=2/3);title(xlab='Age')
-fit <- summary(glm(as.formula(paste("CarbonStorage~",paste(predictors,collapse=" + "))),data=ind_lmc))$coefficients
+fit <- summary(glm(as.formula(paste("CarbonStorage~",paste(predictors,collapse=" + "))),data=ind_lmc_rescaled))$coefficients
 pvalue <- round(fit[row.names(fit)=="demothree_age_num",4],3) 
 if(pvalue==0) pvalue <- "<0.001" 
 mtext(paste("S = ",signif(fit[row.names(fit)=="demothree_age_num",1],2),
@@ -239,16 +266,16 @@ mtext(paste("S = ",signif(fit[row.names(fit)=="demothree_age_num",1],2),
             "p =",pvalue),side=3,cex=0.7)
 mtext("D)",adj=-0.2,cex=2/3)
 
-boxplot(CoastalProtection~jobs2,data=ind_lmc,names=c('Conservation','Extractive','Non-ocean'))
+boxplot(CoastalProtection~jobs2,data=ind_lmc_rescaled,names=c('Conservation','Exploitation','Non-ocean'))
 mtext('Coastal Protection',2,padj=-3.5,cex=2/3);title(xlab='Type of job')
-fit <- aov(as.formula(paste("CoastalProtection~",paste(predictors,collapse=" + "))),data=ind_lmc)
+fit <- aov(as.formula(paste("CoastalProtection~",paste(predictors,collapse=" + "))),data=ind_lmc_rescaled)
 x <- as.data.frame(cld(glht(fit,linfct=mcp(jobs2="Tukey")))$mcletters$Letters)
 axis(3,c(1:nrow(x)),labels=as.character(x[,1]),tick=FALSE,padj=1.5)
 mtext("E)",adj=-0.2,cex=2/3)
 
-boxplot(CoastalLivelihoods~demothree_age_num,names=c("20-24","22-34","35-54","35-44","55-64","65+"),las=3,data=ind_lmc)
+boxplot(CoastalLivelihoods~demothree_age_num,names=c("20-24","22-34","35-54","35-44","55-64","65+"),las=3,data=ind_lmc_rescaled)
 mtext('Coastal Livelihoods',2,padj=-3.5,cex=2/3);title(xlab='Age')
-fit <- summary(glm(as.formula(paste("CoastalLivelihoods~",paste(predictors,collapse=" + "))),data=ind_lmc))$coefficients
+fit <- summary(glm(as.formula(paste("CoastalLivelihoods~",paste(predictors,collapse=" + "))),data=ind_lmc_rescaled))$coefficients
 pvalue <- round(fit[row.names(fit)=="demothree_age_num",4],3) 
 if(pvalue==0) pvalue <- "<0.001" 
 mtext(paste("S = ",signif(fit[row.names(fit)=="demothree_age_num",1],2),
@@ -256,9 +283,9 @@ mtext(paste("S = ",signif(fit[row.names(fit)=="demothree_age_num",1],2),
             "p =",pvalue),side=3,cex=0.7)
 mtext("H)",adj=-0.2,cex=2/3)
 
-boxplot(TourismRecreation~rec2,data=ind_lmc,names=c("0","1-4","5-8"))
-mtext('Tourism & Recreation',2,padj=-3.5,cex=2/3);title(xlab='Number of Rec. Act.')
-fit <- summary(glm(as.formula(paste("TourismRecreation~",paste(predictors,collapse=" + "))),data=ind_lmc))$coefficients
+boxplot(TourismRecreation~rec2,data=ind_lmc_rescaled,names=c("0","1-4","5-8"))
+mtext('Tourism & Recreation',2,padj=-3.5,cex=2/3);title(xlab='Number of Recreational Activities')
+fit <- summary(glm(as.formula(paste("TourismRecreation~",paste(predictors,collapse=" + "))),data=ind_lmc_rescaled))$coefficients
 pvalue <- round(fit[row.names(fit)=="rec",4],3) 
 if(pvalue==0) pvalue <- "<0.001" 
 mtext(paste("S = ",signif(fit[row.names(fit)=="rec",1],2),
@@ -266,9 +293,9 @@ mtext(paste("S = ",signif(fit[row.names(fit)=="rec",1],2),
             "p =",pvalue),side=3,cex=0.7)
 mtext("G)",adj=-0.2,cex=2/3)
 
-boxplot(IconicPlacesSPecies~demothree_age_num,names=c("20-24","22-34","35-54","35-44","55-64","65+"),las=3,data=ind_lmc)
+boxplot(IconicPlacesSPecies~demothree_age_num,names=c("20-24","22-34","35-54","35-44","55-64","65+"),las=3,data=ind_lmc_rescaled)
 mtext('Iconic Places & Species',2,padj=-3.5,cex=2/3);title(xlab='Age')
-fit <- summary(glm(as.formula(paste("IconicPlacesSPecies~",paste(predictors,collapse=" + "))),data=ind_lmc))$coefficients
+fit <- summary(glm(as.formula(paste("IconicPlacesSPecies~",paste(predictors,collapse=" + "))),data=ind_lmc_rescaled))$coefficients
 pvalue <- round(fit[row.names(fit)=="demothree_age_num",4],3) 
 if(pvalue==0) pvalue <- "<0.001" 
 mtext(paste("S = ",signif(fit[row.names(fit)=="demothree_age_num",1],2),
@@ -276,17 +303,17 @@ mtext(paste("S = ",signif(fit[row.names(fit)=="demothree_age_num",1],2),
             "p =",pvalue),side=3,cex=0.7)
 mtext("H)",adj=-0.2,cex=2/3)
 
-boxplot(CleanWaters~jobs2,data=ind_lmc,names=c('Conservation','Extractive','Non-ocean'))
-mtext('CleanWaters',2,padj=-3.5,cex=2/3);title(xlab='Type of job')
-fit <- aov(as.formula(paste("CleanWaters~",paste(predictors,collapse=" + "))),data=ind_lmc)
+boxplot(CleanWaters~jobs2,data=ind_lmc_rescaled,names=c('Conservation','Exploitation','Non-ocean'))
+mtext('Clean Waters',2,padj=-3.5,cex=2/3);title(xlab='Type of job')
+fit <- aov(as.formula(paste("CleanWaters~",paste(predictors,collapse=" + "))),data=ind_lmc_rescaled)
 x <- as.data.frame(cld(glht(fit,linfct=mcp(jobs2="Tukey")))$mcletters$Letters)
 axis(3,c(1:nrow(x)),labels=as.character(x[,1]),tick=FALSE,padj=1.5)
 mtext("I)",adj=-0.2,cex=2/3)
 
 
-boxplot(Biodiversity~demothree_age_num,data=ind_lmc,names=c("20-24","22-34","35-54","35-44","55-64","65+"),las=3)
+boxplot(Biodiversity~demothree_age_num,data=ind_lmc_rescaled,names=c("20-24","22-34","35-54","35-44","55-64","65+"),las=3)
 mtext('Biodiversity',2,padj=-3.5,cex=2/3);title(xlab='Age')
-fit <- summary(glm(as.formula(paste("Biodiversity~",paste(predictors,collapse=" + "))),data=ind_lmc))$coefficients
+fit <- summary(glm(as.formula(paste("Biodiversity~",paste(predictors,collapse=" + "))),data=ind_lmc_rescaled))$coefficients
 pvalue <- round(fit[row.names(fit)=="demothree_age_num",4],3) 
 if(pvalue==0) pvalue <- "<0.001" 
 mtext(paste("S = ",signif(fit[row.names(fit)=="demothree_age_num",1],2),
@@ -304,11 +331,11 @@ lmc_categorized <- as.data.frame(cbind(NE=apply(with(lmc2,cbind(CarbonStorage,Co
                          E=apply(with(lmc2,cbind(FoodProvision,AboriginalNeeds,NaturalProducts,CoastalLivelihoods)),1,mean)))
 sum(lmc_categorized$E>lmc_categorized$NE)/nrow(lmc_categorized)
 
-ind_lmc$E_NE_ratio <- lmc_categorized$E/lmc_categorized$NE
-fit <- aov(as.formula(paste("log(ind_lmc$E_NE_ratio) ~",paste(predictors,collapse=" + "))),data=ind_lmc)
+ind_lmc_rescaled$E_NE_ratio <- lmc_categorized$E/lmc_categorized$NE
+fit <- aov(as.formula(paste("log(ind_lmc_rescaled$E_NE_ratio) ~",paste(predictors,collapse=" + "))),data=ind_lmc_rescaled)
 summary(fit)
 
-sum(log(ind_lmc$E_NE_ratio)<0)/nrow(ind_lmc)
+sum(log(ind_lmc_rescaled$E_NE_ratio)<0)/nrow(ind_lmc_rescaled)
 
 # pdf(paste('figures/f3_users.pdf'),height=10,width=full)
 jpeg(paste('figures/f4_E_VS_NE.jpg'),height=8,width=full ,units = "in",res=res,qual=qual)
@@ -322,9 +349,9 @@ mtext("A)",adj=-0.2,cex=2/3)
 
 par(mar=c(5,4,1,1))
 
-boxplot(log(E_NE_ratio)~demothree_age_num,data=ind_lmc,names=c("20-24","22-34","35-54","35-44","55-64","65+"),las=3)
+boxplot(log(E_NE_ratio)~demothree_age_num,data=ind_lmc_rescaled,names=c("20-24","22-34","35-54","35-44","55-64","65+"),las=3)
 mtext('log(E:NE)',2,padj=-3.5,cex=2/3);title(xlab='Age')
-fit <- summary(glm(as.formula(paste("log(E_NE_ratio)~",paste(predictors,collapse=" + "))),data=ind_lmc))$coefficients
+fit <- summary(glm(as.formula(paste("log(E_NE_ratio)~",paste(predictors,collapse=" + "))),data=ind_lmc_rescaled))$coefficients
 pvalue <- round(fit[row.names(fit)=="demothree_age_num",4],3) 
 if(pvalue==0) pvalue <- "<0.001" 
 mtext(paste("S = ",signif(fit[row.names(fit)=="demothree_age_num",1],2),
@@ -333,9 +360,9 @@ mtext(paste("S = ",signif(fit[row.names(fit)=="demothree_age_num",1],2),
 mtext("B)",adj=-0.2,cex=2/3)
 
 
-boxplot(log(E_NE_ratio)~seafood_eat,data=ind_lmc,las=3)
-mtext('log(E:NE)',2,padj=-3.5,cex=2/3);title(xlab='Seafood eating frequency (yr^-1)')
-fit <- summary(glm(as.formula(paste("log(E_NE_ratio)~",paste(predictors,collapse=" + "))),data=ind_lmc))$coefficients
+boxplot(log(E_NE_ratio)~seafood_eat,data=ind_lmc_rescaled,las=3)
+mtext('log(E:NE)',2,padj=-3.5,cex=2/3);title(xlab=expression('Seafood eating frequency'~(yr^{-1})))
+fit <- summary(glm(as.formula(paste("log(E_NE_ratio)~",paste(predictors,collapse=" + "))),data=ind_lmc_rescaled))$coefficients
 pvalue <- round(fit[row.names(fit)=="seafood_eat",4],3)
 if(pvalue==0) pvalue <- "<0.001"
 mtext(paste("S = ",signif(fit[row.names(fit)=="seafood_eat",1],2),
@@ -344,16 +371,16 @@ mtext(paste("S = ",signif(fit[row.names(fit)=="seafood_eat",1],2),
 mtext("C)",adj=-0.2,cex=2/3)
 
 
-boxplot(log(E_NE_ratio)~rural,data=ind_lmc)
+boxplot(log(E_NE_ratio)~rural,data=ind_lmc_rescaled,names=c("Rural","Urban"))
 title(ylab='log(E:NE)')
-fit <- aov(as.formula(paste("log(E_NE_ratio)~",paste(predictors,collapse=" + "))),data=ind_lmc)
+fit <- aov(as.formula(paste("log(E_NE_ratio)~",paste(predictors,collapse=" + "))),data=ind_lmc_rescaled)
 x <- as.data.frame(cld(glht(fit,linfct=mcp(rural="Tukey")))$mcletters$Letters)
 axis(3,c(1:nrow(x)),labels=as.character(x[,1]),tick=FALSE,padj=1.5)
 mtext("D)",adj=-0.2,cex=2/3)
 
-boxplot(log(E_NE_ratio)~rec2,data=ind_lmc,names=c("0","1-4","5-8"))
-mtext('log(E:NE)',2,padj=-3.5,cex=2/3);title(xlab='Number of Rec. Act.')
-fit <- summary(glm(as.formula(paste("log(E_NE_ratio)~",paste(predictors,collapse=" + "))),data=ind_lmc))$coefficients
+boxplot(log(E_NE_ratio)~rec2,data=ind_lmc_rescaled,names=c("0","1-4","5-8"))
+mtext('log(E:NE)',2,padj=-3.5,cex=2/3);title(xlab='Number of Recreational Activities')
+fit <- summary(glm(as.formula(paste("log(E_NE_ratio)~",paste(predictors,collapse=" + "))),data=ind_lmc_rescaled))$coefficients
 pvalue <- round(fit[row.names(fit)=="rec",4],3) 
 if(pvalue==0) pvalue <- "<0.001" 
 mtext(paste("S = ",signif(fit[row.names(fit)=="rec",1],2),
@@ -361,23 +388,23 @@ mtext(paste("S = ",signif(fit[row.names(fit)=="rec",1],2),
             "p =",pvalue),side=3,cex=0.6)
 mtext("E)",adj=-0.2,cex=2/3)
 
-boxplot(log(E_NE_ratio)~as.character(envr_org),data=ind_lmc,names=c('No','Yes'))
+boxplot(log(E_NE_ratio)~as.character(envr_org),data=ind_lmc_rescaled,names=c('No','Yes'))
 mtext('log(E:NE)',2,padj=-3.5,cex=2/3);title(xlab='ENGO Membership')
-fit <- aov(as.formula(paste("log(E_NE_ratio)~",paste(predictors,collapse=" + "))),data=ind_lmc)
+fit <- aov(as.formula(paste("log(E_NE_ratio)~",paste(predictors,collapse=" + "))),data=ind_lmc_rescaled)
 x <- as.data.frame(cld(glht(fit,linfct=mcp(envr_org="Tukey")))$mcletters$Letters)
 axis(3,c(1:nrow(x)),labels=as.character(x[,1]),tick=FALSE,padj=1.5)
 mtext("F)",adj=-0.2,cex=2/3)
 
-boxplot(log(E_NE_ratio)~political_party2,data=ind_lmc,names=c('CPC','LIB','N/G','Other'))
+boxplot(log(E_NE_ratio)~political_party2,data=ind_lmc_rescaled,names=c('CPC','LIB','NDP/Green','Other'))
 mtext('log(E:NE)',2,padj=-3.5,cex=2/3);title(xlab='Political Party')
-fit <- aov(as.formula(paste("log(E_NE_ratio)~",paste(predictors,collapse=" + "))),data=ind_lmc)
+fit <- aov(as.formula(paste("log(E_NE_ratio)~",paste(predictors,collapse=" + "))),data=ind_lmc_rescaled)
 x <- as.data.frame(cld(glht(fit,linfct=mcp(political_party2="Tukey")))$mcletters$Letters)
 axis(3,c(1:nrow(x)),labels=as.character(x[,1]),tick=FALSE,padj=1.5)
 mtext("G)",adj=-0.2,cex=2/3)
 
-boxplot(log(E_NE_ratio)~as.character(demoone_gender),data=ind_lmc,names=c('Female','Male'))
+boxplot(log(E_NE_ratio)~as.character(demoone_gender),data=ind_lmc_rescaled,names=c('Female','Male'))
 mtext('log(E:NE)',2,padj=-3.5,cex=2/3)
-fit <- aov(as.formula(paste("log(E_NE_ratio)~",paste(predictors,collapse=" + "))),data=ind_lmc)
+fit <- aov(as.formula(paste("log(E_NE_ratio)~",paste(predictors,collapse=" + "))),data=ind_lmc_rescaled)
 x <- as.data.frame(cld(glht(fit,linfct=mcp(envr_protest="Tukey")))$mcletters$Letters)
 axis(3,c(1:nrow(x)),labels=as.character(x[,1]),tick=FALSE,padj=1.5)
 mtext("H)",adj=-0.2,cex=2/3)

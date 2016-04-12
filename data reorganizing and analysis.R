@@ -347,7 +347,7 @@ importance
 weights <- as.data.frame(cbind(importance,BWrank=as.numeric(aveRank),lmc))
 
 weights$importance <- weights$importance/sum(weights$importance)*10
-weights$BWrank <- (10-weights$BWrank)/sum(weights$BWrank)*10
+weights$BWrank <- (10-weights$BWrank)/sum(10-weights$BWrank)*10
 weights$lmc1 <- weights$lmc+1
 weights$lmc10 <- weights$lmc+10
 weights$lmc <- weights$lmc/sum(weights$lmc)*10

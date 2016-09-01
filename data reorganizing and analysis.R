@@ -144,6 +144,12 @@ all_data=all_data[all_data$sample!="BC subsample",]
 # DCE_data=DCE_data[all_data$political_party2==Prov,]
 # all_data=all_data[all_data$political_party2==Prov,]
 
+# filter by environmental engagement
+unique(all_data$envr_org)
+Prov="yes"
+DCE_data=DCE_data[all_data$envr_org==Prov,]
+all_data=all_data[all_data$envr_org==Prov,]
+
 # find which goals are in each set
 for(i in 1:10){
   if(i==1) {
@@ -356,6 +362,6 @@ weights$lmc10 <- weights$lmc10/sum(weights$lmc10)*10
 weights$equal <- 1
 
 
-write.csv(weights,"weights.csv")
-# write.csv(weights,paste0("weights_",Prov,".csv"))
+# write.csv(weights,"weights.csv")
+write.csv(weights,paste0("weights_ENGO_",Prov,".csv"))
 

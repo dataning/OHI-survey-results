@@ -1,7 +1,7 @@
 source("functions.R")
 source("logitmodelcoef_individuals.R")
 
-res <- 400
+res <- 1200
 qual <- 100
 #Figure widths
 single <- 8.6/2.54
@@ -63,7 +63,7 @@ posthoc.kruskal.nemenyi.test(value ~ goal, data = Likert2)
 # plot
 
 # pdf(paste('figures/f1_classweights.pdf'),height=7,width=single)
-jpeg(paste('figures/f1_classweights.jpg'),height=9,width=single,unit="in",res=res,qual=qual)
+png(paste('figures/f1_classweights.png'),height=9,width=single,unit="in",res=res)
 layout(matrix(c(1:3),nrow=3),heights=17+c(2.5,2,14))
 
 #Likert
@@ -170,7 +170,7 @@ for(i in 11:28){
 # fit <- manova(as.formula(paste("as.matrix(ind_lmc[,1:10])~",paste(paste0("ind_lmc$",predictors), collapse= "+"))))
 
 # pdf(paste('figures/f2_ANOVAS.pdf'),height=10,width=full)
-jpeg(paste('figures/f2_ANOVAS.jpg'),height=8,width=full,units = "in",res=res,qual=qual)
+png(paste('figures/f2_ANOVAS.png'),height=8,width=full,units = "in",res=res)
 
 # aovs <- summary.aov(fit)
 layout(matrix(c(1:10),nrow=5),heights=c(2,2,2,2,3.25))
@@ -226,7 +226,7 @@ ind_lmc_rescaled[,1:10] <- ind_lmc_rescaled[,1:10]/sum(apply(ind_lmc_rescaled[,1
 # }
 
 # pdf(paste('figures/f3_users.pdf'),height=10,width=full)
-jpeg(paste('figures/f3_maineffects.jpg'),height=10,width=full ,units = "in",res=res,qual=qual)
+png(paste('figures/f3_maineffects.png'),height=10,width=full ,units = "in",res=res)
 
 layout(matrix(c(1:10),nrow=5))
 par(mar=c(5,4,1,1))
@@ -338,7 +338,7 @@ summary(fit)
 sum(log(ind_lmc_rescaled$E_NE_ratio)<0)/nrow(ind_lmc_rescaled)
 
 # pdf(paste('figures/f3_users.pdf'),height=10,width=full)
-jpeg(paste('figures/f4_E_VS_NE.jpg'),height=8,width=full ,units = "in",res=res,qual=qual)
+png(paste('figures/f4_E_VS_NE.png'),height=8,width=full ,units = "in",res=res)
 
 layout(matrix(c(1:8),nrow=4))
 

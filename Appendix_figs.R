@@ -11,7 +11,8 @@ boxplots <- function(filename,var,varlabel,max_h,width,ncol,res,qual){
   p <- summary(fitaov)[[1]]$`Pr(>F)`
   significant <- p<0.05
   n_fig <- sum(significant,na.rm=TRUE)
-  jpeg(paste(filename),height=max_h/4*ceiling(n_fig/3),width=width,units = "in",res=res,qual=qual)
+  if(var=="AboriginalNeeds") n_fig=5
+  png(paste(filename),height=max_h/4*ceiling(n_fig/3),width=width,units = "in",res=res)
   layout(matrix(c(1:(ncol*ceiling(n_fig/3))),ncol=ncol,byrow = T))
   par(mar=c(5,4,1,1))
   
@@ -175,5 +176,5 @@ boxplots <- function(filename,var,varlabel,max_h,width,ncol,res,qual){
   dev.off()
 }
 for(i in 1:10){
-  boxplots(paste0('figures/fA',i,'_',alternativeNames[i],'.jpg'),alternativeNames[i],"Relative Importance",10,full,3,res,qual)
+  boxplots(paste0('figures/fA',i,'_',alternativeNames[i],'.png'),alternativeNames[i],"Relative Importance",10,full,3,res,qual)
 }
